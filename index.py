@@ -13,9 +13,9 @@ def FindGrade():
     clear()
     cursor.execute('select GradeName,ClassName,TeacherName,SubjectName from grades left join class on class.grade_id=grades.id left join teachers on teachers.class_id=class.id left join subjects on subjects.id=teachers.subject_id;')
     data=cursor.fetchall()
-    print('年级'.center(20,' '),'班级'.center(20,' '),'老师'.center(20,' '),'学科'.center(20,' '))
+    print('年级'.center(20,' '),'班级'.center(20,' '),'老师'.center(21,' '),'学科'.center(20,' '))
 
-    print(('-'*90).center(90,' '))
+    print('-'*90)
     for grade,cl,teacher,subject in data:
 #        print('   {}       {}          {}           {}'.format(grade,cl,teacher,subject))
         grade=grade if grade else '未知'
@@ -26,37 +26,59 @@ def FindGrade():
         print('{}'.format(cl).center(20,' '),end='|')
         print('{}'.format(teacher).center(20,' '),end='|')        
         print('{}'.format(subject).center(20,' '))
-        print(('-'*90).center(90,' '))
+        print('-'*90)
 
 # 查询班级
 def FindClass():
     cursor.execute('select class.id,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.class_id=class.id left join subjects on subjects.id=teachers.subject_id;')
     data=cursor.fetchall()
+    print('id'.center(20,' '),'班级'.center(21,' '),'年级'.center(20,' '),'老师'.center(20,' '),'学科'.center(20,' '))
+    print('-'*111)
     for idx,grade,cl,teacher,subject in data:
         grade=grade if grade else '未知'
         cl=cl if cl else '未知' 
         teacher=teacher if teacher else '未知' 
         subject=subject if subject else '未知'
-        print(idx,cl,grade,teacher,subject)
+        print(str(idx).center(20,' '),end='|')
+        print(cl.center(20,' '),end='|')
+        print(grade.center(20,' '),end='|')
+        print(teacher.center(20,' '),end='|')
+        print(subject.center(20,' '))
+        print('-'*111)
 
 # 查询老师
 def FindTeacher():
     cursor.execute('select teachers.id,ClassName,TeacherName,sex,age,SubjectName from (class right join teachers on teachers.class_id=class.id) left join subjects on teachers.subject_id=subjects.id;')
     teachers=cursor.fetchall()
+    print('id'.center(20,' '),'姓名'.center(20,' '),'性别'.center(18,' '),'年龄'.center(19,' '),'学科'.center(20,' '),'班级'.center(20,' '))
+    print('-'*131)
     for idx,cl,name,sex,age,subject in teachers:
         cl=cl if cl else '未知'
         subject=subject if subject else '未知'
-        print(idx,name,sex,age,subject,cl)
+        print(str(idx).center(20,' '),end='|')
+        print(name.center(20,' '),end='|')
+        print(sex.center(20,' '),end='|')
+        print(str(age).center(20,' '),end='|')
+        print(subject.center(20,' '),end='|')
+        print(cl.center(20,' '))
+        print('-'*131)
 # 查询课程
 def FindSubject():
     cursor.execute('select subjects.id,GradeName,ClassName,TeacherName,SubjectName from teachers right join subjects on teachers.subject_id=subjects.id left join class on teachers.class_id=class.id left join grades on grades.id=class.grade_id;')
     subjects=cursor.fetchall()
+    print('id'.center(20,' '),'学科'.center(20,' '),'年级'.center(20,' '),'班级'.center(20,' '),'老师'.center(21,' '))
+    print('-'*111)
     for idx,grade,cl,teacher,subject in subjects:
         grade=grade if grade else '未知'
         cl=cl if cl else '未知' 
         teacher=teacher if teacher else '未知' 
         subject=subject if subject else '未知'
-        print(idx,subject,grade,cl,teacher)
+        print(str(idx).center(20,' '),end='|')
+        print(subject.center(20,' '),end='|')
+        print(grade.center(20,' '),end='|')
+        print(cl.center(20,' '),end='|')
+        print(teacher.center(20,' '))
+        print('-'*111)
 
 options='''
 **********V1.0 教务管理系统********* 
@@ -107,13 +129,13 @@ while True:
                 input('按任意键返回'.center(84,'-'))
             elif int(findselect)==2:
                 FindClass()
-                input('按任意键返回'.center(84,'-'))
+                input('按任意键返回'.center(105,'-'))
             elif int(findselect)==3:
                 FindTeacher()
-                input('按任意键返回'.center(84,'-'))
+                input('按任意键返回'.center(125,'-'))
             elif int(findselect)==4:
                 FindSubject()
-                input('按任意键返回'.center(84,'-'))
+                input('按任意键返回'.center(105,'-'))
             else:
                 break
     elif int(selected)==3:
