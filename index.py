@@ -122,6 +122,20 @@ def AddTeacher():
             continue
         else:
             break
+def AddSubject():
+    while True:
+        clear()
+        try:
+            SubjectName=input('请输入您要添加的学科')
+            cursor.execute('insert into subjects(SubjectName) values("{}");'.format(SubjectName))
+            print('添加成功\n')
+        except:
+            print('因为未知原因,添加失败,请稍后重试......')
+        msg=input('是否继续添加 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
 options='''
 **********V1.0 教务管理系统********* 
 **                                **
