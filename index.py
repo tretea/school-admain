@@ -103,6 +103,25 @@ def AddClass():
             continue
         else:
             break
+def AddTeacher():
+    while True:
+        clear()
+        print('学科'.center(40,'-'))
+        FindSubject()
+        try:
+            name=input('请输入老师姓名:')
+            age=int(input('请输入老师年龄:'))
+            sex=input('请输入老师性别:')
+            subjectid=int(input('请输入老师所授科目id:'))
+            cursor.execute('insert into teachers(TeacherName,age,sex,subject_id) values("{}",{},"{}",{});'.format(name,age,sex,subjectid))
+            print('添加成功\n')
+        except:
+            print('因为未知原因,添加失败,请稍后重试......')
+        msg=input('是否继续添加 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
 options='''
 **********V1.0 教务管理系统********* 
 **                                **
@@ -193,6 +212,12 @@ while True:
                 print('按其他任意键返回'.center(28,'-'),'\n')
             elif int(i)==2:
                 AddClass()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==3:
+                AddTeacher()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==4:
+                AddSubject()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             else:
                 break
