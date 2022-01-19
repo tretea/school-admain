@@ -2,7 +2,7 @@
 #coding=utf-8
 import pymysql
 import os
-db=pymysql.connect(host='localhost',user='root',password='123456',database='school',charset='utf8')
+db=pymysql.connect(host='localhost',user='root',database='school',charset='utf8')
 cursor=db.cursor()
 # 清空界面
 def clear():
