@@ -13,8 +13,8 @@ def FindGrade():
     clear()
     cursor.execute('select * from grades;')
     data=cursor.fetchall()
+    print('年级'.center(38,'-'))
     print('id'.center(20,' '),'年级'.center(20,' '))
-
     print('-'*40)
     for idx,grade in data:
         print('{}'.format(idx).center(20,' '),end='|')
@@ -25,12 +25,13 @@ def FindGrade():
 def FindClass():
     cursor.execute('select class.id,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id;')
     data=cursor.fetchall()
+    print('班级'.center(109,'-'),'\n')
     print('id'.center(20,' '),'班级'.center(21,' '),'年级'.center(20,' '),'老师'.center(20,' '),'学科'.center(20,' '))
     print('-'*111)
     for idx,grade,cl,teacher,subject in data:
         grade=grade if grade else '未知'
-        cl=cl if cl else '未知' 
-        teacher=teacher if teacher else '未知' 
+        cl=cl if cl else '未知'
+        teacher=teacher if teacher else '未知'
         subject=subject if subject else '未知'
         print(str(idx).center(20,' '),end='|')
         print(cl.center(20,' '),end='|')
@@ -43,6 +44,7 @@ def FindClass():
 def FindTeacher():
     cursor.execute('select teachers.id,ClassName,TeacherName,sex,age,SubjectName from (class right join teachers on teachers.id=class.teacher_id) left join subjects on teachers.subject_id=subjects.id;')
     teachers=cursor.fetchall()
+    print('老师'.center(129,'-'),'\n')
     print('id'.center(20,' '),'姓名'.center(20,' '),'性别'.center(18,' '),'年龄'.center(19,' '),'学科'.center(20,' '),'班级'.center(20,' '))
     print('-'*131)
     for idx,cl,name,sex,age,subject in teachers:
@@ -60,6 +62,7 @@ def FindTeacher():
 def FindSubject():
     cursor.execute('select * from subjects;')
     subjects=cursor.fetchall()
+    print('学科'.center(38,'-'),'\n')
     print('id'.center(20,' '),'学科'.center(20,' '))
     print('-'*40)
     for idx,subject in subjects:
@@ -86,9 +89,7 @@ def AddGrade():
 def AddClass():
     while True:
         clear()
-        print('年级'.center(100,'-'))
         FindGrade()
-        print('老师'.center(80,'-'))
         FindTeacher()
         try:
             gradeid=int(input('请输入班级所在的年级:'))
@@ -106,7 +107,6 @@ def AddClass():
 def AddTeacher():
     while True:
         clear()
-        print('学科'.center(40,'-'))
         FindSubject()
         try:
             name=input('请输入老师姓名:')
@@ -136,6 +136,143 @@ def AddSubject():
             continue
         else:
             break
+def delGrade():
+    while True:
+        clear()
+        FindGrade()
+        try:
+            grade_id=int(input('请输入要删除的年级id'))
+            cursor.execute(f'delete from grades where id={grade_id};')
+            print('删除成功\n')
+        except:
+            print('由于未知原因,删除失败,请稍后重试......')
+        msg=input('是否继续删除 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+# 删除
+def delClass():
+    while True:
+        clear()
+        FindClass()
+        try:
+            class_id=int(input('请输入要删除的班级id'))
+            cursor.execute(f'delete from class where id={class_id};')
+            print('删除成功\n')
+        except:
+            print('由于未知原因,删除失败,请稍后重试......')
+        msg=input('是否继续删除 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+def delTeacher():
+    while True:
+        clear()
+        FindTeacher()
+        try:
+            teacher_id=int(input('请输入要删除的老师id'))
+            cursor.execute(f'delete from teachers where id={teacher_id};')
+            print('删除成功\n')
+        except:
+            print('由于未知原因,删除失败,请稍后重试......')
+        msg=input('是否继续删除 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+def delSubject():
+    while True:
+        clear()
+        FindSubject()
+        try:
+            subject_id=int(input('请输入要删除的学科id'))
+            cursor.execute(f'delete from subjects where id={subject_id};')
+            print('删除成功\n')
+        except:
+            print('由于未知原因,删除失败,请稍后重试......')
+        msg=input('是否继续删除 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+
+def updateGrade():
+    while True:
+        clear()
+        FindGrade()
+        try:
+            grade_id=int(input('请输入需要更新的年级id：'))
+            grade_name=input('请输入年级：')
+            cursor.execute(f'update grades set GradeName="{grade_name}" where id={grade_id};')
+            print('更新成功\n')
+        except:
+            print('由于未知原因,更新失败,请稍后重试......')
+        msg=input('是否继续更新 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+
+def updateClass():
+    while True:
+        clear()
+        FindGrade()
+        FindClass()
+        FindTeacher()
+        try:
+            class_id=int(input('请输入要更新的班级id:'))
+            grade_id=int(input('年级id:'))
+            class_name=input('班级:')
+            class_teacher=int(input('请输入班级中的老师id:'))
+            cursor.execute(f'update class set ClassName="{class_name}",teacher_id={class_teacher},grade_id={grade_id} where id={class_id};')
+            print('更新成功\n')
+        except:
+            print('由于未知原因,更新失败,请稍后重试......')
+        msg=input('是否继续更新 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+def updateTeacher():
+    while True:
+        clear()
+        FindTeacher()
+        FindSubject()
+        try:
+            teacher_id=int(input('请输入要更新的老师id:'))
+            teacher_name=input('姓名:')
+            teacher_age=int(input('年龄:'))
+            teacher_sex=input('性别:')
+            subject_id=int(input('学科id:'))
+            cursor.execute(f'update teachers set TeacherName="{teacher_name}",age={teacher_age},sex="{teacher_sex}",subject_id={subject_id} where id={teacher_id};')
+            print('更新成功\n')
+        except:
+            print('由于未知原因,更新失败,请稍后重试......')
+        msg=input('是否继续更新 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+
+def updateSubject():
+    while True:
+        clear()
+        FindSubject()
+        try:
+            sub_id=int(input('请输入要更新的学科id:'))
+            sub_name=input('学科:')
+            cursor.execute(f'update subjects set SubjectName="{sub_name}" where id={sub_id};')
+            print('更新成功\n')
+        except:
+            print('由于未知原因,更新失败,请稍后重试......')
+        msg=input('是否继续更新 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+
 options='''
 **********V1.0 教务管理系统********* 
 **                                **
@@ -178,6 +315,34 @@ addoptions='''
 ************************************
 '''
 
+deloptions='''
+************V1.0 删除界面*********** 
+**                                **
+**     ******1.删除年级******     **
+**                                **
+**     ******2.删除班级******     **
+**                                **
+**     ******3.删除老师******     **
+**                                **
+**     ******4.删除课程******     **
+**                                **
+************************************
+'''
+
+updateoptions='''
+************V1.0 更新界面*********** 
+**                                **
+**     ******1.更新年级******     **
+**                                **
+**     ******2.更新班级******     **
+**                                **
+**     ******3.更新老师******     **
+**                                **
+**     ******4.更新课程******     **
+**                                **
+************************************
+'''
+
 while True:
     clear()
     print(options)
@@ -210,9 +375,6 @@ while True:
                 input('按任意键返回'.center(34,'-'))
             else:
                 break
-    elif int(selected)==3:
-        clear()
-        input('功能正在开发中,按任意键继续......')
     elif int(selected)==2:
         while True:
             clear()
@@ -232,6 +394,50 @@ while True:
                 print('按其他任意键返回'.center(28,'-'),'\n')
             elif int(i)==4:
                 AddSubject()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            else:
+                break
+    elif int(selected)==3:
+        while True:
+            clear()
+            print(deloptions)
+            print('按其他任意键返回'.center(28,'-'),'\n')
+            i=input('请输入您要添加的选项:')
+            if not i.isdigit():
+                break
+            elif int(i)==1:
+                delGrade()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==2:
+                delClass()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==3:
+                delTeacher()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==4:
+                delSubject()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            else:
+                break
+    elif int(selected)==4:
+        while True:
+            clear()
+            print(updateoptions)
+            print('按其他任意键返回'.center(28,'-'),'\n')
+            i=input('请输入您要添加的选项:')
+            if not i.isdigit():
+                break
+            elif int(i)==1:
+                updateGrade()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==2:
+                updateClass()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==3:
+                updateTeacher()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==4:
+                updateSubject()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             else:
                 break
