@@ -27,9 +27,15 @@ CREATE TABLE `class` (
   `grade_id` int DEFAULT NULL,
   `ClassName` varchar(30) DEFAULT NULL,
   `teacher_id` int DEFAULT NULL,
+  `t1_id` int DEFAULT NULL,
+  `t2_id` int DEFAULT NULL,
+  `t3_id` int DEFAULT NULL,
+  `t4_id` int DEFAULT NULL,
+  `t5_id` int DEFAULT NULL,
+  `Type` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `class_grade` (`grade_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +44,7 @@ CREATE TABLE `class` (
 
 LOCK TABLES `class` WRITE;
 /*!40000 ALTER TABLE `class` DISABLE KEYS */;
-INSERT INTO `class` VALUES (1,1,'高一1班',NULL),(2,1,'高一2班',NULL),(3,1,'高一3班',NULL),(4,2,'高二1班',NULL),(5,2,'高二2班',NULL),(6,2,'高二3班',NULL),(7,3,'高三1班',NULL),(8,3,'高三2班',NULL),(9,3,'高三四班',NULL);
+INSERT INTO `class` VALUES (1,1,'高一1班',NULL,NULL,NULL,NULL,NULL,NULL,0),(2,1,'高一2班',NULL,NULL,NULL,NULL,NULL,NULL,0),(3,1,'高一3班',NULL,NULL,NULL,NULL,NULL,NULL,0),(4,2,'高二1班',NULL,NULL,NULL,NULL,NULL,NULL,1),(5,2,'高二2班',NULL,NULL,NULL,NULL,NULL,NULL,1),(6,2,'高二3班',NULL,NULL,NULL,NULL,NULL,NULL,2),(7,3,'高三1班',NULL,NULL,NULL,NULL,NULL,NULL,1),(8,3,'高三2班',NULL,NULL,NULL,NULL,NULL,NULL,1),(9,3,'高三3班',NULL,NULL,NULL,NULL,NULL,NULL,2);
 /*!40000 ALTER TABLE `class` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +59,7 @@ CREATE TABLE `grades` (
   `id` int NOT NULL AUTO_INCREMENT,
   `GradeName` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +68,7 @@ CREATE TABLE `grades` (
 
 LOCK TABLES `grades` WRITE;
 /*!40000 ALTER TABLE `grades` DISABLE KEYS */;
-INSERT INTO `grades` VALUES (1,'高一'),(2,'高二'),(3,'高三'),(19,'大一');
+INSERT INTO `grades` VALUES (1,'高一'),(2,'高二'),(3,'高三');
 /*!40000 ALTER TABLE `grades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,8 +82,9 @@ DROP TABLE IF EXISTS `subjects`;
 CREATE TABLE `subjects` (
   `id` int NOT NULL AUTO_INCREMENT,
   `SubjectName` varchar(10) DEFAULT NULL,
+  `Type` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +93,7 @@ CREATE TABLE `subjects` (
 
 LOCK TABLES `subjects` WRITE;
 /*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
-INSERT INTO `subjects` VALUES (1,'语文'),(2,'数学'),(3,'英语'),(4,'数据结构与算法');
+INSERT INTO `subjects` VALUES (1,'语文',0),(2,'数学',0),(3,'英语',0),(4,'物理',1),(5,'化学',1),(19,'生物',1),(20,'政治',2),(21,'历史',2),(22,'地理',2);
 /*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,7 +111,7 @@ CREATE TABLE `teachers` (
   `sex` varchar(2) DEFAULT NULL,
   `subject_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +120,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (1,'小明',22,'男',NULL),(2,'小刚',23,'男',NULL),(3,'小李',22,'男',NULL),(4,'小红',21,'女',NULL),(5,'小王',22,'女',NULL);
+INSERT INTO `teachers` VALUES (13,'李白',100,'男',1),(14,'杜甫',100,'男',1),(15,'李清照',100,'女',1),(16,'祖冲之',100,'男',2),(17,'华罗庚',100,'男',2),(18,'小李子',50,'男',3),(19,'阿米尔汗',50,'男',3),(20,'阿基米德',100,'男',4),(21,'牛顿',100,'男',4),(22,'居里夫人',100,'女',5),(23,'屠呦呦',50,'女',19),(24,'李世民',100,'男',20),(25,'司马迁',100,'男',21),(26,'郦道元',100,'男',22);
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -126,4 +133,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-21 22:22:50
+-- Dump completed on 2022-01-22 19:37:02
