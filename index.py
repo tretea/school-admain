@@ -68,6 +68,15 @@ def FindClass():
         print(subject.center(20,' '))
         print('-'*135)
     print('\n')
+
+# 查看班级详情信息
+def FindClassDetail():
+    class_id=int(input('请输入班级id查询详情:'))
+    sql=f'select t5.id,t5.ClassName,t5.TeacherName,t5.t1name,t5.t2name,t5.t3name,t5.t4name,teachers.TeacherName as t5name from (select t4.id,t4.ClassName,t4.TeacherName,t4.t1name,t4.t2name,t4.t3name,teachers.TeacherName as t4name,t4.t5_id from (select t3.id,t3.ClassName,t3.TeacherName,t3.t1name,t3.t2name,teachers.TeacherName as t3name,t3.t4_id,t3.t5_id from (select t2.id,t2.ClassName,t2.TeacherName,t2.t1name,teachers.TeacherName as t2name,t2.t3_id,t2.t4_id,t2.t5_id from (select t1.id,t1.ClassName,t1.TeacherName,teachers.TeacherName as t1name,t1.t2_id,t1.t3_id,t1.t4_id,t1.t5_id from (select class.id,ClassName,TeacherName,t1_id,t2_id,t3_id,t4_id,t5_id from class left join teachers on class .teacher_id=teachers.id where class.id={class_id}) as t1 left join teachers on t1.t1_id=teachers.id) as t2 left join teachers on t2.t2_id=teachers.id) as t3 left join teachers on teachers.id=t3.t3_id) as t4 left join teachers on teachers.id=t4.t4_id) as t5 left join teachers on t5.t5_id=teachers.id;'
+    cursor.execute(sql)
+    data=cursor.fetchall()
+    for n in data:
+        print(n)
 # 查询老师
 def FindTeacher(typeid=0):
     if typeid==0:
@@ -408,8 +417,8 @@ updateoptions='''
 **                                **
 ************************************
 '''
-
-while True:
+FindClassDetail()
+while False:
     clear()
     print(options)
     print('按其他任意键退出'.center(28,'-'),'\n')
