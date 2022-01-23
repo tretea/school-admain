@@ -32,7 +32,21 @@ def FindGrade():
     print('\n')
 # 查询班级
 def FindClass():
-    cursor.execute('select class.Type,class.id,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id;')
+    sql='select class.Type,class.id,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id'
+    conditions=map(int,input('请输入查询条件(年级 0/文理科 1 (多个条件以空格分隔)):').strip().split(' '))
+    clear()
+    for i in conditions:
+        if i==0:
+           FindGrade() 
+           gradeid=int(input('请输入年级id:'))
+           strtemp=' where' if sql.find('where')<0 else ' and'
+           sql=sql+strtemp+f' class.grade_id={gradeid}'
+        elif i==1:
+            typeid=int(input('全科0/理科1/文科2'))
+            strtemp=' where' if sql.find('where')<0 else ' and'
+            sql=sql+strtemp+f' class.Type={typeid}'
+    sql=sql+';'
+    cursor.execute(sql)
     data=cursor.fetchall()
     print('班级'.center(133,'-'),'\n')
     print('id'.center(20,' '),'文/理'.center(20,' '),'班级'.center(21,' '),'年级'.center(20,' '),'班主任'.center(20,' '),'学科'.center(18,' '))
@@ -55,7 +69,7 @@ def FindClass():
         print('-'*135)
     print('\n')
 # 查询老师
-def FindTeacher(typeid):
+def FindTeacher(typeid=0):
     if typeid==0:
         cursor.execute('select teachers.id,ClassName,TeacherName,sex,age,SubjectName from (class right join teachers on teachers.id=class.teacher_id) left join subjects on teachers.subject_id=subjects.id;')
     else:
@@ -210,7 +224,7 @@ def delClass():
 def delTeacher():
     while True:
         clear()
-        FindTeacher(0)
+        FindTeacher()
         try:
             teacher_id=int(input('请输入要删除的老师id:'))
             teacher_id=changId("teachers",teacher_id)
@@ -286,7 +300,7 @@ def updateClass():
 def updateTeacher():
     while True:
         clear()
-        FindTeacher(0)
+        FindTeacher()
         FindSubject()
         try:
             teacher_id=int(input('请输入要更新的老师id:'))
@@ -420,7 +434,7 @@ while True:
                 FindClass()
                 input('按任意键返回'.center(129,'-'))
             elif int(findselect)==3:
-                FindTeacher(0)
+                FindTeacher()
                 input('按任意键返回'.center(125,'-'))
             elif int(findselect)==4:
                 FindSubject()
