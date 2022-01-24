@@ -24,14 +24,15 @@ def FindGrade():
     cursor.execute('select * from grades;')
     data=cursor.fetchall()
     print('年级'.center(38,'-'))
-    print('id'.center(20,' '),'年级'.center(20,' '))
+    print('id'.center(19,' '),'年级'.center(18,' '))
     print('-'*40)
     for idx,grade in enumerate(data):
-        print('{}'.format(idx).center(20,' '),end='|')
-        print('{}'.format(grade[1]).center(20,' '))
+        print('{}'.format(idx).center(19,' '),end='|')
+        print('{}'.format(grade[1]).center(20-len(grade[1]),' '))
         print('-'*40)
     print('\n')
 # 查询班级
+# TODO 条件表与详情表id不符
 def FindClass():
     sql='select class.Type,class.id,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id'
     conditions=map(str,input('请输入查询条件(年级 0/文理科 1 (多个条件以空格分隔)):').strip().split(' '))
@@ -143,7 +144,7 @@ def FindSubject():
     cursor.execute('select * from subjects;')
     subjects=cursor.fetchall()
     print('学科'.center(64,'-'),'\n')
-    print('id'.center(20,' '),'学科'.center(20,' '),'文/理'.center(20,' '))
+    print('id'.center(19,' '),'学科'.center(18,' '),'文/理'.center(18,' '))
     print('-'*66)
     for idx,(ind,subject,Type) in enumerate(subjects):
         if Type==0:
