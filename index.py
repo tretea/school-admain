@@ -17,17 +17,16 @@ def changId(table,table_id):
 # 清空界面
 def clear():
     os.system('clear')
-
+# TODO 年级与班级 班级与老师 老师与学科外键
 # 查询年级
 def FindGrade():
-    clear()
     cursor.execute('select * from grades;')
     data=cursor.fetchall()
     print('年级'.center(38,'-'))
-    print('id'.center(19,' '),'年级'.center(18,' '))
+    print('id'.center(20,' '),'年级'.center(18,' '))
     print('-'*40)
     for idx,grade in enumerate(data):
-        print('{}'.format(idx).center(19,' '),end='|')
+        print('{}'.format(idx).center(20,' '),end='|')
         print('{}'.format(grade[1]).center(20-len(grade[1]),' '))
         print('-'*40)
     print('\n')
@@ -36,7 +35,6 @@ def FindGrade():
 def FindClass():
     sql='select class.Type,class.id,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id'
     conditions=map(str,input('请输入查询条件(年级 0/文理科 1 (多个条件以空格分隔)):').strip().split(' '))
-    clear()
     for i in conditions:
         if i=='0':
            FindGrade() 
@@ -52,7 +50,7 @@ def FindClass():
     cursor.execute(sql)
     data=cursor.fetchall()
     print('班级'.center(133,'-'),'\n')
-    print('id'.center(20,' '),'文/理'.center(20,' '),'班级'.center(21,' '),'年级'.center(20,' '),'班主任'.center(20,' '),'学科'.center(18,' '))
+    print('id'.center(20,' '),'文/理'.center(18,' '),'班级'.center(18,' '),'年级'.center(18,' '),'班主任'.center(17,' '),'学科'.center(18,' '))
     print('-'*135)
     for idx,(Type,ind,grade,cl,teacher,subject) in enumerate(data):
         if Type==0:
@@ -64,11 +62,11 @@ def FindClass():
         teacher=teacher if teacher else '未知'
         subject=subject if subject else '未知'
         print(str(idx).center(20,' '),end='|')
-        print(str(Type).center(20,' '),end='|')
+        print(Type.center(20-len(Type),' '),end='|')
         print(cl.center(20,' '),end='|')
-        print(grade.center(20,' '),end='|')
-        print(teacher.center(20,' '),end='|')
-        print(subject.center(20,' '))
+        print(grade.center(20-len(grade),' '),end='|')
+        print(teacher.center(20-len(teacher),' '),end='|')
+        print(subject.center(20-len(subject),' '))
         print('-'*135)
     print('\n')
 
@@ -95,7 +93,6 @@ def FindClassDetail():
                 sub=('无数据',) if not sub else sub
                 sublist.append(sub[0])
             print('-'*123)
-            print('id'.center(13,' '),end='|') 
             print('班级'.center(13,' '),end='|')
             print('班主任'.center(12,' '),end='|')
             print(f'{sublist[0]}'.center(15-len(sublist[0]),' '),end='|')
@@ -104,8 +101,7 @@ def FindClassDetail():
             print(f'{sublist[3]}'.center(15-len(sublist[3]),' '),end='|')
             print(f'{sublist[4]}'.center(15-len(sublist[4]),' '))
             print('-'*123)
-            print(f'{data[0]}'.center(15-len(str(data[0])),' '),end='|') 
-            print(f'{data[1]}'.center(15-len(data[1]),' '),end='|')
+            print(f'{data[1]}'.center(15,' '),end='|')
             print(f'{data[2]}'.center(15-len(data[2]),' '),end='|')
             print(f'{data[3]}'.center(15-len(data[3]),' '),end='|')
             print(f'{data[4]}'.center(15-len(data[4]),' '),end='|')
@@ -126,17 +122,17 @@ def FindTeacher(typeid=0):
         cursor.execute(f'select teachers.id,ClassName,TeacherName,sex,age,SubjectName from (class right join teachers on teachers.id=class.teacher_id) left join subjects on teachers.subject_id=subjects.id where subjects.Type=0 or subjects.Type={typeid};')
     teachers=cursor.fetchall()
     print('老师'.center(129,'-'),'\n')
-    print('id'.center(19,' '),'姓名'.center(18,' '),'性别'.center(18,' '),'年龄'.center(18,' '),'学科'.center(18,' '),'班级'.center(18,' '))
+    print('id'.center(20,' '),'姓名'.center(18,' '),'性别'.center(18,' '),'年龄'.center(18,' '),'学科'.center(18,' '),'班级'.center(18,' '))
     print('-'*131)
     for idx,(ind,cl,name,sex,age,subject) in enumerate(teachers):
         cl=cl if cl else '未知'
         subject=subject if subject else '未知'
-        print(str(idx).center(19,' '),end='|')
+        print(str(idx).center(20,' '),end='|')
         print(name.center(20-len(name),' '),end='|')
         print(sex.center(20-len(sex),' '),end='|')
-        print(str(age).center(19,' '),end='|')
+        print(str(age).center(20,' '),end='|')
         print(subject.center(20-len(subject),' '),end='|')
-        print(cl.center(20-len(cl),' '))
+        print(cl.center(20,' '))
         print('-'*131)
     print('\n')
 # 查询课程
@@ -144,14 +140,14 @@ def FindSubject():
     cursor.execute('select * from subjects;')
     subjects=cursor.fetchall()
     print('学科'.center(64,'-'),'\n')
-    print('id'.center(19,' '),'学科'.center(18,' '),'文/理'.center(18,' '))
+    print('id'.center(20,' '),'学科'.center(18,' '),'文/理'.center(18,' '))
     print('-'*66)
     for idx,(ind,subject,Type) in enumerate(subjects):
         if Type==0:
             Type='主科'
         else:
             Type='理科' if Type==1 else '文科'
-        print(str(idx).center(19,' '),end='|')
+        print(str(idx).center(20,' '),end='|')
         print(subject.center(20-len(subject),' '),end='|')
         print(Type.center(20-len(Type),' '))
         print('-'*66)
@@ -175,9 +171,9 @@ def AddGrade():
 def AddClass():
     while True:
         clear()
-        FindGrade()
         try:
             Typeid=int(input('全科:0/理科:1/文科:2 :'))
+            FindGrade()
             FindTeacher(Typeid)
             gradeid=int(input('请输入班级所在的年级id:'))
             gradeid=changId("grades",gradeid)
@@ -322,12 +318,12 @@ def updateGrade():
             continue
         else:
             break
-
+# TODO 更新班级老师
 def updateClass():
     while True:
         clear()
-        FindGrade()
         FindClass()
+        FindGrade()
         try:
             typeid=int(input('全科0/理科1/文科2:'))
             FindTeacher(typeid)
@@ -472,7 +468,7 @@ while True:
             clear()
             print(findoptions)
             print('按其他任意键返回'.center(28,'-'),'\n')
-            findselect=input('请输入需要查询的选项')
+            findselect=input('请输入需要查询的选项:')
             clear()
             if not findselect.isdigit():
                 break
