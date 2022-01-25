@@ -20,7 +20,6 @@ def changId(table,table_id,swatch=0):
 # 清空界面
 def clear():
     os.system('clear')
-# TODO 年级与班级 班级与老师 老师与学科外键
 # 查询年级
 def FindGrade():
     cursor.execute('select * from grades;')
