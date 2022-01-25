@@ -6,8 +6,11 @@ import os
 db=pymysql.connect(host='localhost',user='root',database='school',charset='utf8')
 cursor=db.cursor()
 # 转换逻辑id为索引id
-def changId(table,table_id):
-    cursor.execute(f'select * from {table};')
+def changId(table,table_id,swatch=0):
+    if not swatch:
+        cursor.execute(f'select * from {table};')
+    else:
+        cursor.execute(table)
     grades=cursor.fetchall()
     for ind,val in enumerate(grades):
         if table_id==ind:
@@ -33,7 +36,7 @@ def FindGrade():
 # 查询班级
 # TODO 条件表与详情表id不符
 def FindClass():
-    sql='select class.Type,class.id,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id'
+    sql='select class.id,class.Type,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id'
     conditions=map(str,input('请输入查询条件(年级 0/文理科 1 (多个条件以空格分隔)):').strip().split(' '))
     for i in conditions:
         if i=='0':
@@ -52,7 +55,7 @@ def FindClass():
     print('班级'.center(133,'-'),'\n')
     print('id'.center(20,' '),'文/理'.center(18,' '),'班级'.center(18,' '),'年级'.center(18,' '),'班主任'.center(17,' '),'学科'.center(18,' '))
     print('-'*135)
-    for idx,(Type,ind,grade,cl,teacher,subject) in enumerate(data):
+    for idx,(ind,Type,grade,cl,teacher,subject) in enumerate(data):
         if Type==0:
             Type='全科'
         else:
@@ -69,15 +72,15 @@ def FindClass():
         print(subject.center(20-len(subject),' '))
         print('-'*135)
     print('\n')
-
+    FindClassDetail(sql)
 # 查看班级详情信息
-def FindClassDetail():
+def FindClassDetail(classsql):
     while True:
         class_id=input('请输入班级id查询详情:')
         if not class_id.isdigit():
             break
         else:
-            class_id=changId('class',int(class_id))
+            class_id=changId(classsql,int(class_id),1)
             sql=f'select t5.id,t5.ClassName,t5.TeacherName,t5.t1name,t5.t2name,t5.t3name,t5.t4name,teachers.TeacherName as t5name from (select t4.id,t4.ClassName,t4.TeacherName,t4.t1name,t4.t2name,t4.t3name,teachers.TeacherName as t4name,t4.t5_id from (select t3.id,t3.ClassName,t3.TeacherName,t3.t1name,t3.t2name,teachers.TeacherName as t3name,t3.t4_id,t3.t5_id from (select t2.id,t2.ClassName,t2.TeacherName,t2.t1name,teachers.TeacherName as t2name,t2.t3_id,t2.t4_id,t2.t5_id from (select t1.id,t1.ClassName,t1.TeacherName,teachers.TeacherName as t1name,t1.t2_id,t1.t3_id,t1.t4_id,t1.t5_id from (select class.id,ClassName,TeacherName,t1_id,t2_id,t3_id,t4_id,t5_id from class left join teachers on class .teacher_id=teachers.id where class.id={class_id}) as t1 left join teachers on t1.t1_id=teachers.id) as t2 left join teachers on t2.t2_id=teachers.id) as t3 left join teachers on teachers.id=t3.t3_id) as t4 left join teachers on teachers.id=t4.t4_id) as t5 left join teachers on t5.t5_id=teachers.id;'
             cursor.execute(sql)
             datat=cursor.fetchone()
@@ -477,7 +480,6 @@ while True:
                 input('按任意键返回'.center(34,'-'))
             elif int(findselect)==2:
                 FindClass()
-                FindClassDetail()
                 input('按任意键返回'.center(129,'-'))
             elif int(findselect)==3:
                 FindTeacher()
