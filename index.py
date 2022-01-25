@@ -34,7 +34,6 @@ def FindGrade():
         print('-'*40)
     print('\n')
 # 查询班级
-# TODO 条件表与详情表id不符
 def FindClass():
     sql='select class.id,class.Type,GradeName,ClassName,TeacherName,SubjectName from grades right join class on class.grade_id=grades.id left join teachers on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id'
     conditions=map(str,input('请输入查询条件(年级 0/文理科 1 (多个条件以空格分隔)):').strip().split(' '))
@@ -73,6 +72,7 @@ def FindClass():
         print('-'*135)
     print('\n')
     FindClassDetail(sql)
+    return sql
 # 查看班级详情信息
 def FindClassDetail(classsql):
     while True:
@@ -117,6 +117,7 @@ def FindClassDetail(classsql):
                 continue
             else:
                 break
+            
 # 查询老师
 def FindTeacher(typeid=0):
     if typeid==0:
@@ -321,23 +322,32 @@ def updateGrade():
             continue
         else:
             break
-# TODO 更新班级老师
 def updateClass():
     while True:
         clear()
-        FindClass()
-        FindGrade()
         try:
-            typeid=int(input('全科0/理科1/文科2:'))
-            FindTeacher(typeid)
+            findclass=FindClass()
             class_id=int(input('请输入要更新的班级id:'))
-            class_id=changId("class",class_id)
+            class_id=changId(findclass,class_id,1)
+            typeid=int(input('全科0/理科1/文科2:'))
+            FindTeacher(typeid) 
+            FindGrade()
             grade_id=int(input('年级id:'))
             grade_id=changId("grades",grade_id)
             class_name=input('班级:')
             class_teacher=int(input('请输入班级中的班主任id:'))
             class_teacher=changId("teachers",class_teacher)
-            cursor.execute(f'update class set ClassName="{class_name}",teacher_id={class_teacher},grade_id={grade_id},Type={typeid} where id={class_id};')
+            t1_id=int(input('请输入班级中的老师id:'))
+            t1_id=changId("teachers",t1_id)
+            t2_id=int(input('请输入班级中的老师id:'))
+            t2_id=changId("teachers",t2_id)
+            t3_id=int(input('请输入班级中的老师id:'))
+            t3_id=changId("teachers",t3_id)           
+            t4_id=int(input('请输入班级中的老师id:'))
+            t4_id=changId("teachers",t4_id)
+            t5_id=int(input('请输入班级中的老师id:'))
+            t5_id=changId("teachers",t5_id)
+            cursor.execute(f'update class set ClassName="{class_name}",teacher_id={class_teacher},t1_id={t1_id},t2_id={t2_id},t3_id={t3_id},t4_id={t4_id},t5_id={t5_id},grade_id={grade_id},Type={typeid} where id={class_id};')
             print('更新成功\n')
         except:
             print('由于未知原因,更新失败,请稍后重试......')
