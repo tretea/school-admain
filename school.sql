@@ -86,6 +86,36 @@ INSERT INTO `grades` VALUES (1,'高一'),(2,'高二'),(3,'高三');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `students`
+--
+
+DROP TABLE IF EXISTS `students`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `students` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idcard` int NOT NULL,
+  `name` varchar(4) DEFAULT NULL,
+  `age` int DEFAULT NULL,
+  `sex` varchar(2) DEFAULT NULL,
+  `class_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `class_stu` (`class_id`),
+  CONSTRAINT `class_stu` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `students`
+--
+
+LOCK TABLES `students` WRITE;
+/*!40000 ALTER TABLE `students` DISABLE KEYS */;
+INSERT INTO `students` VALUES (1,21001001,'孙智超',21,'男',3),(2,21001002,'樊羿莹',21,'女',1),(3,21002001,'卞壮',21,'男',2),(4,21002002,'樊鑫茹',21,'女',2);
+/*!40000 ALTER TABLE `students` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `subjects`
 --
 
@@ -148,4 +178,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-26 11:01:48
+-- Dump completed on 2022-01-26 18:11:27

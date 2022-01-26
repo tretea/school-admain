@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 #coding=utf-8
-from dataclasses import dataclass
+
+# TODO user表
+
 import pymysql
 import os
 db=pymysql.connect(host='localhost',user='root',database='school',charset='utf8')
@@ -20,6 +22,10 @@ def changId(table,table_id,swatch=0):
 # 清空界面
 def clear():
     os.system('clear')
+
+# TODO 课程管理
+# 查询课程
+
 # 查询年级
 def FindGrade():
     cursor.execute('select * from grades;')
@@ -492,6 +498,8 @@ options='''
 **     ******3.删除数据******     **
 **                                **
 **     ******4.更新数据******     **
+**                                **
+**     ******5.课程管理******     **
 **                                **
 ************************************
 '''
