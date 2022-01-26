@@ -94,7 +94,7 @@ def FindClassDetail(classsql):
                 sub=cursor.fetchone()
                 sub=('无数据',) if not sub else sub
                 sublist.append(sub[0])
-            print('-'*123)
+            print('-'*113)
             print('班级'.center(13,' '),end='|')
             print('班主任'.center(12,' '),end='|')
             print(f'{sublist[0]}'.center(15-len(sublist[0]),' '),end='|')
@@ -102,7 +102,7 @@ def FindClassDetail(classsql):
             print(f'{sublist[2]}'.center(15-len(sublist[2]),' '),end='|')
             print(f'{sublist[3]}'.center(15-len(sublist[3]),' '),end='|')
             print(f'{sublist[4]}'.center(15-len(sublist[4]),' '))
-            print('-'*123)
+            print('-'*113)
             print(f'{data[1]}'.center(15,' '),end='|')
             print(f'{data[2]}'.center(15-len(data[2]),' '),end='|')
             print(f'{data[3]}'.center(15-len(data[3]),' '),end='|')
@@ -110,13 +110,27 @@ def FindClassDetail(classsql):
             print(f'{data[5]}'.center(15-len(data[5]),' '),end='|')
             print(f'{data[6]}'.center(15-len(data[6]),' '),end='|')
             print(f'{data[7]}'.center(15-len(data[7]),' '))
-            print('-'*123,'\n')
+            print('-'*113,'\n')
+            stu_sql=f'select id,idcard,name,age,sex from students where class_id={class_id};'
+            cursor.execute(stu_sql)
+            stu=cursor.fetchall()
+            print('-'*90)
+            print('学号'.center(18,' '),end='|')
+            print('姓名'.center(18,' '),end='|')
+            print('年龄'.center(18,' '),end='|')
+            print('性别'.center(18,' '))
+            print('-'*90)
+            for ind,idcard,name,age,sex in stu:
+                print(str(idcard).center(20,' '),end='|')
+                print(name.center(20-len(name),' '),end='|')
+                print(str(age).center(20,' '),end='|')
+                print(sex.center(20-len(sex),' '))
+                print('-'*90)
             msg=input('是否继续查看详情 y?n ')
             if msg=='y' or msg=='Y':
                 continue
             else:
                 break
-            
 # 查询老师
 def FindTeacher(typeid=0):
     if typeid==0:
@@ -254,6 +268,25 @@ def delGrade():
         else:
             break
 # 删除
+def delStudent():
+    while True:
+        clear()
+        FindClass()
+        try:
+            stuid=int(input('请输入要删学生的学号:'))
+            issure=input('是否确认删除 y/n?')
+            if issure=='y' or issure=='Y':
+                cursor.execute(f'delete from students where idcard={stuid};')
+                print('删除成功\n')
+            else:
+                continue
+        except:
+            print('删除失败,请稍后重试......')
+        msg=input('是否继续删除 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
 def delClass():
     while True:
         clear()
@@ -261,8 +294,12 @@ def delClass():
         try:
             class_id=int(input('请输入要删除的班级id:'))
             class_id=changId("class",class_id)
-            cursor.execute(f'delete from class where id={class_id};')
-            print('删除成功\n')
+            issure=input('是否确认删除 y/n?')
+            if issure=='y' or 'Y':
+                cursor.execute(f'delete from class where id={class_id};')
+                print('删除成功\n')
+            else:
+                continue
         except:
             print('由于未知原因,删除失败,请稍后重试......')
         msg=input('是否继续删除 y/n?')
@@ -277,8 +314,12 @@ def delTeacher():
         try:
             teacher_id=int(input('请输入要删除的老师id:'))
             teacher_id=changId("teachers",teacher_id)
-            cursor.execute(f'delete from teachers where id={teacher_id};')
-            print('删除成功\n')
+            issure=input('是否确认删除 y/n?')
+            if issure=='y' or issure=='Y':
+                cursor.execute(f'delete from teachers where id={teacher_id};')
+                print('删除成功\n')
+            else:
+                continue
         except:
             print('由于未知原因,删除失败,请稍后重试......')
         msg=input('是否继续删除 y/n?')
@@ -293,8 +334,12 @@ def delSubject():
         try:
             subject_id=int(input('请输入要删除的学科id:'))
             subject_id=changId("subjects",subject_id)
-            cursor.execute(f'delete from subjects where id={subject_id};')
-            print('删除成功\n')
+            issure=input('是否确认删除 y/n?')
+            if issure=='y' or issure=='Y':
+                cursor.execute(f'delete from subjects where id={subject_id};')
+                print('删除成功\n')
+            else:
+                continue
         except:
             print('由于未知原因,删除失败,请稍后重试......')
         msg=input('是否继续删除 y/n?')
@@ -302,8 +347,48 @@ def delSubject():
             continue
         else:
             break
-
+def AddStudent():
+    while True:
+        clear()
+        classsql=FindClass()
+        try:
+            idcard=int(input('请输入学生学号:'))
+            name=input('请输入学生姓名:')
+            age=int(input('请输入学生年龄:'))
+            sex=input('请输入学生性别:')
+            classid=int(input('请输入班级id:'))
+            classid=changId(classsql,classid,1)
+            cursor.execute(f'insert into students(idcard,name,age,sex,class_id) values({idcard},"{name}",{age},"{sex}",{classid});')
+            # cursor.execute(f'update students set idcard={idcard},name="{name}",age={age},sex="{sex}",class_id={classid};')
+            print('添加成功\n')
+        except:
+            print('添加失败,请稍后重试......')
+        msg=input('是否继续添加 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
 # 更新
+def UpdateStudent():
+    while True:
+        clear()
+        classsql=FindClass()
+        try:
+            stuid=int(input('您要更新的学生学号'))
+            name=input('请输入学生姓名:')
+            age=int(input('请输入学生年龄:'))
+            sex=input('请输入学生性别:')
+            classid=int(input('请输入班级id:'))
+            classid=changId(classsql,classid,1)
+            cursor.execute(f'update students set name="{name}",age={age},sex="{sex}",class_id={classid} where idcard={stuid};')
+            print('更新成功\n')
+        except:
+            print('添加失败,请稍后重试......')
+        msg=input('是否继续添加 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
 def updateGrade():
     while True:
         clear()
@@ -434,7 +519,9 @@ addoptions='''
 **                                **
 **     ******3.添加老师******     **
 **                                **
-**     ******4.添加课程******     **
+**     ******4.添加学生******     **
+**                                **
+**     ******5.添加课程******     **
 **                                **
 ************************************
 '''
@@ -447,8 +534,10 @@ deloptions='''
 **     ******2.删除班级******     **
 **                                **
 **     ******3.删除老师******     **
+**                                ** 
+**     ******4.删除学生******     **
 **                                **
-**     ******4.删除课程******     **
+**     ******5.删除课程******     **
 **                                **
 ************************************
 '''
@@ -462,7 +551,9 @@ updateoptions='''
 **                                **
 **     ******3.更新老师******     **
 **                                **
-**     ******4.更新课程******     **
+**     ******4.更新学生******     **
+**                                **
+**     ******5.更新课程******     **
 **                                **
 ************************************
 '''
@@ -516,6 +607,9 @@ while True:
                 AddTeacher()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             elif int(i)==4:
+                AddStudent()
+                print('按其他任意键返回'.center(28,' '),'\n')
+            elif int(i)==5:
                 AddSubject()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             else:
@@ -538,6 +632,9 @@ while True:
                 delTeacher()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             elif int(i)==4:
+                delStudent()
+                print('按其他任意键返回'.center(28,'-'),'\n') 
+            elif int(i)==5:
                 delSubject()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             else:
@@ -560,6 +657,9 @@ while True:
                 updateTeacher()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             elif int(i)==4:
+                UpdateStudent()
+                print('按其他任意键返回'.center(28,'-'),'\n')
+            elif int(i)==5:
                 updateSubject()
                 print('按其他任意键返回'.center(28,'-'),'\n')
             else:

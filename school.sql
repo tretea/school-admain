@@ -34,7 +34,20 @@ CREATE TABLE `class` (
   `t5_id` int DEFAULT NULL,
   `Type` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `class_grade` (`grade_id`)
+  KEY `class_grade` (`grade_id`),
+  KEY `teacher_class` (`teacher_id`),
+  KEY `t1_class` (`t1_id`),
+  KEY `t2_class` (`t2_id`),
+  KEY `t3_class` (`t3_id`),
+  KEY `t4_class` (`t4_id`),
+  KEY `t5_class` (`t5_id`),
+  CONSTRAINT `grade_class` FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `t1_class` FOREIGN KEY (`t1_id`) REFERENCES `teachers` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `t2_class` FOREIGN KEY (`t2_id`) REFERENCES `teachers` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `t3_class` FOREIGN KEY (`t3_id`) REFERENCES `teachers` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `t4_class` FOREIGN KEY (`t4_id`) REFERENCES `teachers` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `t5_class` FOREIGN KEY (`t5_id`) REFERENCES `teachers` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `teacher_class` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,7 +123,9 @@ CREATE TABLE `teachers` (
   `age` int DEFAULT NULL,
   `sex` varchar(2) DEFAULT NULL,
   `subject_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `teacher_sub` (`subject_id`),
+  CONSTRAINT `teacher_sub` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -133,4 +148,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-25 13:08:26
+-- Dump completed on 2022-01-26 11:01:48
