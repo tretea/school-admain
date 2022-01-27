@@ -882,30 +882,35 @@ def TeacherJiemian(teacherid):
                 else:
                     break
         elif int(selected)==3:
-            while True:
-                clear()
-                print(deloptions)
-                print('按其他任意键返回'.center(28,'-'),'\n')
-                i=input('请输入您要添加的选项:')
-                if not i.isdigit():
-                    break
-                elif int(i)==1:
-                    delGrade()
-                    print('按其他任意键返回'.center(28,'-'),'\n')
-                elif int(i)==2:
-                    delClass()
-                    print('按其他任意键返回'.center(28,'-'),'\n')
-                elif int(i)==3:
-                    delTeacher()
-                    print('按其他任意键返回'.center(28,'-'),'\n')
-                elif int(i)==4:
-                    delStudent()
-                    print('按其他任意键返回'.center(28,'-'),'\n') 
-                elif int(i)==5:
-                    delSubject()
-                    print('按其他任意键返回'.center(28,'-'),'\n')
-                else:
-                    break
+            clear()
+            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid};'
+            cursor.execute(sql)
+            data=cursor.fetchall()
+            
+            table={'周一':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周二':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周三':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周四':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周五':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周六':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周日':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''}}
+            
+            for classname,time,week,weeknum,classnum,subjectname in data:
+                table[weeknum][classnum]=subjectname
+            
+
+            print(f'2019年第一学期第一周'.center(93,'-'))
+            print(' '.center(10,' '),'|','周一'.center(8,' '),'|','周二'.center(8,' '),'|','周三'.center(8,' '),'|','周四'.center(8,' '),'|','周五'.center(8,' '),'|','周六'.center(8,' '),'|','周日'.center(8,' '))
+            print('-'*101)
+            print('第一大节'.center(6,' '),'|',table['周一']['第一大节'].center(10 if table['周一']['第一大节']=='' else 8,' '),'|',table['周二']['第一大节'].center(10 if table['周二']['第一大节']=='' else 8,' '),'|',table['周三']['第一大节'].center(10 if table['周三']['第一大节']=='' else 8,' '),'|',table['周四']['第一大节'].center(10 if table['周四']['第一大节']=='' else 8,' '),'|',table['周五']['第一大节'].center(10 if table['周五']['第一大节']=='' else 8,' '),'|',table['周六']['第一大节'].center(10 if table['周六']['第一大节']=='' else 8,' '),'|',table['周日']['第一大节'].center(10 if table['周日']['第一大节']=='' else 8,' '))
+
+            print('-'*101)
+            
+            print('第二大节'.center(6,' '),'|',table['周一']['第二大节'].center(10 if table['周一']['第二大节']=='' else 8,' '),'|',table['周二']['第二大节'].center(10 if table['周二']['第二大节']=='' else 8,' '),'|',table['周三']['第二大节'].center(10 if table['周三']['第二大节']=='' else 8,' '),'|',table['周四']['第二大节'].center(10 if table['周四']['第二大节']=='' else 8,' '),'|',table['周五']['第二大节'].center(10 if table['周五']['第二大节']=='' else 8,' '),'|',table['周六']['第二大节'].center(10 if table['周六']['第二大节']=='' else 8,' '),'|',table['周日']['第二大节'].center(10 if table['周日']['第二大节']=='' else 8,' '))
+
+            print('-'*101)
+            print('第三大节'.center(6,' '),'|',table['周一']['第三大节'].center(10 if table['周一']['第三大节']=='' else 8,' '),'|',table['周二']['第三大节'].center(10 if table['周二']['第三大节']=='' else 8,' '),'|',table['周三']['第三大节'].center(10 if table['周三']['第三大节']=='' else 8,' '),'|',table['周四']['第三大节'].center(10 if table['周四']['第三大节']=='' else 8,' '),'|',table['周五']['第三大节'].center(10 if table['周五']['第三大节']=='' else 8,' '),'|',table['周六']['第三大节'].center(10 if table['周六']['第三大节']=='' else 8,' '),'|',table['周日']['第三大节'].center(10 if table['周日']['第三大节']=='' else 8,' '))
+
+            print('-'*101)
+            print('第四大节'.center(6,' '),'|',table['周一']['第四大节'].center(10 if table['周一']['第四大节']=='' else 8,' '),'|',table['周二']['第四大节'].center(10 if table['周二']['第四大节']=='' else 8,' '),'|',table['周三']['第四大节'].center(10 if table['周三']['第四大节']=='' else 8,' '),'|',table['周四']['第四大节'].center(10 if table['周四']['第四大节']=='' else 8,' '),'|',table['周五']['第四大节'].center(10 if table['周五']['第四大节']=='' else 8,' '),'|',table['周六']['第四大节'].center(10 if table['周六']['第四大节']=='' else 8,' '),'|',table['周日']['第四大节'].center(10 if table['周日']['第四大节']=='' else 8,' '))
+
+            print('-'*101)
+            print('\n')
+            input('按Enter返回'.center(98,'-'))
         else:
             clear()
             print('退出成功'.center(28,'*')) 
