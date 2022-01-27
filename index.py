@@ -607,6 +607,34 @@ t_s_options='''
 ************************************
 '''
 
+t_score_options='''
+**********V1.0 成绩管理界面********* 
+**                                **
+**     ******1.查看成绩******     **
+**                                **
+**     ******2.输入成绩******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+'''
+
+def t_Student(teacherid):
+    classsql=f'select class.id from teachers left join class on teachers.id=class.teacher_id or teachers.id=class.t1_id or teachers.id=class.t2_id or teachers.id=class.t3_id or teachers.id=class.t4_id or teachers.id=class.t5_id where teachers.id={teacherid};'
+    cursor.execute(classsql)
+    classid=cursor.fetchone()[0]
+    
+    sql=f'select idcard,name,age,sex from students left join class on class.id=students.class_id where class.id={classid};'
+    cursor.execute(sql)
+    data=cursor.fetchall()
+    print('学生表'.center(87,'-'))
+    print('学号'.center(18,' '),'|','姓名'.center(18,' '),'|','年龄'.center(18,' '),'|','性别'.center(18,' '))
+    print('-'*90)
+    for ClassName,name,age,sex in data:
+        print(str(ClassName).center(20,' '),'|',name.center(20-len(name),' '),'|',str(age).center(20,' '),'|',sex.center(20-len(sex),' '))
+        print('-'*90)
+    print('\n')
+
 def GuanLi():
     while True:
         clear()
@@ -785,26 +813,72 @@ def TeacherJiemian(teacherid):
         elif int(selected)==2:
             while True:
                 clear()
-                print(addoptions)
+                print(t_s_options)
                 print('按其他任意键返回'.center(28,'-'),'\n')
                 i=input('请输入您要添加的选项:')
                 if not i.isdigit():
                     break
                 elif int(i)==1:
-                    AddGrade()
-                    print('按其他任意键返回'.center(28,'-'),'\n')
+                    clear()
+                    t_Student(teacherid)
+                    input('按其他任意键返回'.center(82,'-'))
                 elif int(i)==2:
-                    AddClass()
-                    print('按其他任意键返回'.center(28,'-'),'\n') 
-                elif int(i)==3:
-                    AddTeacher()
-                    print('按其他任意键返回'.center(28,'-'),'\n')
-                elif int(i)==4:
-                    AddStudent()
-                    print('按其他任意键返回'.center(28,' '),'\n')
-                elif int(i)==5:
-                    AddSubject()
-                    print('按其他任意键返回'.center(28,'-'),'\n')
+                    while True:
+                        clear()
+                        print(t_score_options)
+                        scoreselected=input('请输入选项:')
+                        if not scoreselected.isdigit():
+                            break
+                        elif int(scoreselected)==1:
+                            while True:
+                                clear()
+                                try:
+                                    time=input('请输入某年某学期:')
+                                    sub_sql=f'select subject_id from teachers where teachers.id={teacherid};'
+                                    cursor.execute(sub_sql)
+                                    sub_id=cursor.fetchone()[0]
+                                    sql=f'select scores.time,students.name,SubjectName,scores.score from teachers left join class on teachers.id=class.teacher_id or teachers.id=class.t1_id or teachers.id=class.t2_id or  teachers.id=class.t3_id or  teachers.id=class.t4_id or  teachers.id=class.t5_id left join students on students.class_id=class.id left join scores on scores.stu_id=students.id left join subjects on scores.sub_id=subjects.id where teachers.id={teacherid} and scores.time="{time}" and scores.sub_id={sub_id} order by students.id;'
+                                    cursor.execute(sql)
+                                    data=cursor.fetchall()
+                                    clear()
+                                    print(f'{time}'.center(60,'-'))
+                                    print('姓名'.center(18,' '),'|','学科'.center(18,' '),'|','成绩'.center(18,' '))
+                                    print('-'*65)
+                                    for utime,name,subject,uscore in data:
+                                        print(f'{name}'.center(20-len(name),' '),'|',f'{subject}'.center(20-len(subject),' '),'|',f'{uscore}'.center(20,' '))
+                                        print('-'*65)
+                                    print('\n')
+                                    input('按其他任意键返回'.center(57,'-')) 
+                                    break
+                                except:
+                                    print('查询失败,请稍后重试......')
+                        elif int(scoreselected)==2:
+                            while True:
+                                clear()
+                                t_Student(teacherid)
+                                time=input('请输入某年某学期:')
+                                idcard=input('请输入学生号:')
+                                score=input('请输入学生本门课的成绩:')
+                                stusql=f'select id from students where idcard={idcard};'
+                                subsql=f'select teachers.subject_id from teachers where teachers.id={teacherid};'
+                                cursor.execute(stusql)
+                                stuid=cursor.fetchone()[0]
+                                cursor.execute(subsql)
+                                subid=cursor.fetchone()[0]
+                                try:
+                                    sql=f'insert into scores(time,score,stu_id,sub_id)values("{time}",{score},{stuid},{subid});'
+                                    cursor.execute(sql)
+                                    print('输入成功')
+                                except:
+                                    print('输入失败,请稍后重试.....')
+                                msg=input('是否继续输入成绩 y?n')
+                                if msg=='y' or msg=='Y':
+                                    continue
+                                else:
+                                    break
+                            input('按其他任意键返回'.center(82,'-')) 
+                        else:
+                            break
                 else:
                     break
         elif int(selected)==3:
