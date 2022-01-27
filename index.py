@@ -883,7 +883,7 @@ def TeacherJiemian(teacherid):
                     break
         elif int(selected)==3:
             clear()
-            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid};'
+            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid} and class.id=courses.class_id;'
             cursor.execute(sql)
             data=cursor.fetchall()
             
@@ -916,7 +916,7 @@ def TeacherJiemian(teacherid):
             print('退出成功'.center(28,'*')) 
             break
 
-TeacherJiemian(13)
+TeacherJiemian(14)
 # while True:
 #     clear()
 #     print(loginoptions)
