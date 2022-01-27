@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 #coding=utf-8
-
-# TODO user表
-
 import pymysql
 import os
 db=pymysql.connect(host='localhost',user='root',database='school',charset='utf8')
@@ -565,116 +562,335 @@ updateoptions='''
 **                                **
 ************************************
 '''
-while True:
-    clear()
-    print(options)
-    print('按其他任意键退出'.center(28,'-'),'\n')
-    selected=input('请输入您要进行的操作:')
-    if not selected.isdigit():
+loginoptions='''
+************V1.0 登录界面*********** 
+**                                **
+**     ******0.管理登录******     **
+**                                **
+**     ******1.老师登录******     **
+**                                **
+**     ******2.学生登录******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+'''
+
+teacheroptions='''
+**********V1.0 教务管理系统********* 
+**                                **
+**     ******1.我的管理******     **
+**                                **
+**     ******2.学生管理******     **
+**                                **
+**     ******3.查看课程******     **
+**                                **
+************************************
+'''
+
+t_my_options='''
+****************我的**************** 
+**                                **
+**     ******1.个人信息******     **
+**                                **
+**     ******2.修改密码******     **
+**                                **
+************************************
+'''
+t_s_options='''
+**********V1.0 学生管理界面********* 
+**                                **
+**     ******1.查看学生******     **
+**                                **
+**     ******2.成绩管理******     **
+**                                **
+************************************
+'''
+
+def GuanLi():
+    while True:
         clear()
-        print('退出成功'.center(28,'*')) 
-        break
-    elif int(selected)==1:
-        while True:
+        print(options)
+        print('按其他任意键退出'.center(28,'-'),'\n')
+        selected=input('请输入您要进行的操作:')
+        if not selected.isdigit():
             clear()
-            print(findoptions)
-            print('按其他任意键返回'.center(28,'-'),'\n')
-            findselect=input('请输入需要查询的选项:')
+            print('退出成功'.center(28,'*')) 
+            break
+        elif int(selected)==1:
+            while True:
+                clear()
+                print(findoptions)
+                print('按其他任意键返回'.center(28,'-'),'\n')
+                findselect=input('请输入需要查询的选项:')
+                clear()
+                if not findselect.isdigit():
+                    break
+                elif int(findselect)==1:
+                    FindGrade()
+                    input('按任意键返回'.center(34,'-'))
+                elif int(findselect)==2:
+                    FindClass()
+                    input('按任意键返回'.center(129,'-'))
+                elif int(findselect)==3:
+                    FindTeacher()
+                    input('按任意键返回'.center(125,'-'))
+                elif int(findselect)==4:
+                    FindSubject()
+                    input('按任意键返回'.center(60,'-'))
+                else:
+                    break
+        elif int(selected)==2:
+            while True:
+                clear()
+                print(addoptions)
+                print('按其他任意键返回'.center(28,'-'),'\n')
+                i=input('请输入您要添加的选项:')
+                if not i.isdigit():
+                    break
+                elif int(i)==1:
+                    AddGrade()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==2:
+                    AddClass()
+                    print('按其他任意键返回'.center(28,'-'),'\n') 
+                elif int(i)==3:
+                    AddTeacher()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==4:
+                    AddStudent()
+                    print('按其他任意键返回'.center(28,' '),'\n')
+                elif int(i)==5:
+                    AddSubject()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                else:
+                    break
+        elif int(selected)==3:
+            while True:
+                clear()
+                print(deloptions)
+                print('按其他任意键返回'.center(28,'-'),'\n')
+                i=input('请输入您要添加的选项:')
+                if not i.isdigit():
+                    break
+                elif int(i)==1:
+                    delGrade()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==2:
+                    delClass()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==3:
+                    delTeacher()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==4:
+                    delStudent()
+                    print('按其他任意键返回'.center(28,'-'),'\n') 
+                elif int(i)==5:
+                    delSubject()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                else:
+                    break
+        elif int(selected)==4:
+            while True:
+                clear()
+                print(updateoptions)
+                print('按其他任意键返回'.center(28,'-'),'\n')
+                i=input('请输入您要添加的选项:')
+                if not i.isdigit():
+                    break
+                elif int(i)==1:
+                    updateGrade()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==2:
+                    updateClass()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==3:
+                    updateTeacher()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==4:
+                    UpdateStudent()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==5:
+                    updateSubject()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                else:
+                    break
+        else:
             clear()
-            if not findselect.isdigit():
-                break
-            elif int(findselect)==1:
-                FindGrade()
-                input('按任意键返回'.center(34,'-'))
-            elif int(findselect)==2:
-                FindClass()
-                input('按任意键返回'.center(129,'-'))
-            elif int(findselect)==3:
-                FindTeacher()
-                input('按任意键返回'.center(125,'-'))
-            elif int(findselect)==4:
-                FindSubject()
-                input('按任意键返回'.center(60,'-'))
-            else:
-                break
-    elif int(selected)==2:
-        while True:
-            clear()
-            print(addoptions)
-            print('按其他任意键返回'.center(28,'-'),'\n')
-            i=input('请输入您要添加的选项:')
-            if not i.isdigit():
-                break
-            elif int(i)==1:
-                AddGrade()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==2:
-                AddClass()
-                print('按其他任意键返回'.center(28,'-'),'\n') 
-            elif int(i)==3:
-                AddTeacher()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==4:
-                AddStudent()
-                print('按其他任意键返回'.center(28,' '),'\n')
-            elif int(i)==5:
-                AddSubject()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            else:
-                break
-    elif int(selected)==3:
-        while True:
-            clear()
-            print(deloptions)
-            print('按其他任意键返回'.center(28,'-'),'\n')
-            i=input('请输入您要添加的选项:')
-            if not i.isdigit():
-                break
-            elif int(i)==1:
-                delGrade()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==2:
-                delClass()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==3:
-                delTeacher()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==4:
-                delStudent()
-                print('按其他任意键返回'.center(28,'-'),'\n') 
-            elif int(i)==5:
-                delSubject()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            else:
-                break
-    elif int(selected)==4:
-        while True:
-            clear()
-            print(updateoptions)
-            print('按其他任意键返回'.center(28,'-'),'\n')
-            i=input('请输入您要添加的选项:')
-            if not i.isdigit():
-                break
-            elif int(i)==1:
-                updateGrade()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==2:
-                updateClass()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==3:
-                updateTeacher()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==4:
-                UpdateStudent()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            elif int(i)==5:
-                updateSubject()
-                print('按其他任意键返回'.center(28,'-'),'\n')
-            else:
-                break
-    else:
+            print('退出成功'.center(28,'*')) 
+            break
+
+def TeacherJiemian(teacherid):
+    while True:
         clear()
-        print('退出成功'.center(28,'*')) 
-        break
+        print(teacheroptions)
+        print('按其他任意键退出'.center(28,'-'),'\n')
+        selected=input('请输入您要进行的操作:')
+        if not selected.isdigit():
+            clear()
+            print('退出成功'.center(28,'*')) 
+            break
+        elif int(selected)==1:
+            while True:
+                clear()
+                print(t_my_options)
+                print('按其他任意键返回'.center(28,'-'),'\n')
+                findselect=input('请输入需要查询的选项:')
+                clear()
+                if not findselect.isdigit():
+                    break
+                elif int(findselect)==1:
+                    clear()
+                    sql=f'select ClassName,TeacherName,age,sex,SubjectName from teachers left join class on teachers.id=class.teacher_id left join subjects on subjects.id=teachers.subject_id where teachers.id={teacherid};'
+                    cursor.execute(sql)
+                    msg=cursor.fetchone()
+                    print('个人信息'.center(96,'-'))
+                    print('班级'.center(18,' '),end='|')
+                    print('姓名'.center(18,' '),end='|')
+                    print('年龄'.center(18,' '),end='|')
+                    print('性别'.center(18,' '),end='|')
+                    print('科目'.center(18,' '))
+                    print('-'*100)
+                    print(str(msg[0]).center(20,' '),end='|')
+                    print(msg[1].center(20-len(msg[1]),' '),end='|')
+                    print(str(msg[2]).center(20,' '),end='|')
+                    print(msg[3].center(20-len(msg[3]),' '),end='|')
+                    print(msg[4].center(20-len(msg[4]),' '))
+                    print('-'*100,'\n')
+                    input('按任意键返回'.center(94,'-'))
+                elif int(findselect)==2:
+                    msg=input('是否确认修改密码 y/n?')
+                    if msg=='y' or msg=='Y':
+                        while True:
+                            newpwd=input('请输入30以内字符:')
+                            while True:
+                                if not newpwd:
+                                    input('更新失败,新密码不能为空')
+                                    break
+                                elif len(newpwd)>30:
+                                    input('更新失败,密码限制30个字符')
+                                    break
+                                else:
+                                    surepwd=input('请输入确认密码:')
+                                    if not newpwd==surepwd:
+                                        input('确认密码错误')
+                                        continue
+                                    else:
+                                        sql=f'update user set password="{newpwd}" where t_id={teacherid};'
+                                        input('修改该密码成功')
+                                        break
+                            break
+                    else:
+                        continue
+        elif int(selected)==2:
+            while True:
+                clear()
+                print(addoptions)
+                print('按其他任意键返回'.center(28,'-'),'\n')
+                i=input('请输入您要添加的选项:')
+                if not i.isdigit():
+                    break
+                elif int(i)==1:
+                    AddGrade()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==2:
+                    AddClass()
+                    print('按其他任意键返回'.center(28,'-'),'\n') 
+                elif int(i)==3:
+                    AddTeacher()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==4:
+                    AddStudent()
+                    print('按其他任意键返回'.center(28,' '),'\n')
+                elif int(i)==5:
+                    AddSubject()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                else:
+                    break
+        elif int(selected)==3:
+            while True:
+                clear()
+                print(deloptions)
+                print('按其他任意键返回'.center(28,'-'),'\n')
+                i=input('请输入您要添加的选项:')
+                if not i.isdigit():
+                    break
+                elif int(i)==1:
+                    delGrade()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==2:
+                    delClass()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==3:
+                    delTeacher()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                elif int(i)==4:
+                    delStudent()
+                    print('按其他任意键返回'.center(28,'-'),'\n') 
+                elif int(i)==5:
+                    delSubject()
+                    print('按其他任意键返回'.center(28,'-'),'\n')
+                else:
+                    break
+        else:
+            clear()
+            print('退出成功'.center(28,'*')) 
+            break
+
+TeacherJiemian(13)
+# while True:
+#     clear()
+#     print(loginoptions)
+#     model=input('请输入选项:')
+#     if not model.isdigit():
+#         clear()
+#         print('退出成功'.center(36,'-'))
+#         break
+#     elif int(model)==0:
+#         username=input('请输入管理员账号:')
+#         userpwd=input('请输入密码:')
+#         sql=f'select password from user where username="{username}" and Type=0;'
+#         cursor.execute(sql)
+#         pwd=cursor.fetchone()
+#         if not pwd==None:
+#             pwd=pwd[0]
+#             if userpwd==pwd:
+#                 GuanLi() 
+#             else:
+#                 input('密码错误!!!')
+#         else:
+#             input('账号错误!!!')
+#     elif int(model)==1: 
+#         username=input('请输入老师账号:')
+#         userpwd=input('请输入密码:')
+#         sql=f'select password from user where username="{username}" and Type=1;'
+#         cursor.execute(sql)
+#         pwd=cursor.fetchone()
+#         if not pwd==None:
+#             pwd=pwd[0]
+#             if userpwd==pwd:
+#                 input('老师登录成功')
+#             else:
+#                 input('密码错误!!!')
+#         else:
+#             input('账号错误!!!')
+#     elif int(model)==2: 
+#         username=input('请输入学生账号:')
+#         userpwd=input('请输入密码:')
+#         sql=f'select password from user where username="{username}" and Type=2;'
+#         cursor.execute(sql)
+#         pwd=cursor.fetchone()
+#         if not pwd==None:
+#             pwd=pwd[0]
+#             if userpwd==pwd:
+#                 input('学生登陆成功')
+#             else:
+#                 input('密码错误!!!')
+#         else:
+#             input('账号错误!!!')
+#     else:
+#         clear()
+#         print('退出成功'.center(36,'-'))
+#         break
 db.close()
 
