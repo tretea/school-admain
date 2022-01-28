@@ -100,11 +100,11 @@ def FindClassDetail(classsql):
             print('-'*113)
             print('班级'.center(13,' '),end='|')
             print('班主任'.center(12,' '),end='|')
-            print(f'{sublist[0]}'.center(15-len(sublist[0]),' '),end='|')
-            print(f'{sublist[1]}'.center(15-len(sublist[1]),' '),end='|')
-            print(f'{sublist[2]}'.center(15-len(sublist[2]),' '),end='|')
-            print(f'{sublist[3]}'.center(15-len(sublist[3]),' '),end='|')
-            print(f'{sublist[4]}'.center(15-len(sublist[4]),' '))
+            print(f'{sublist[1]}'.center(15-len(sublist[0]),' '),end='|')
+            print(f'{sublist[2]}'.center(15-len(sublist[1]),' '),end='|')
+            print(f'{sublist[3]}'.center(15-len(sublist[2]),' '),end='|')
+            print(f'{sublist[4]}'.center(15-len(sublist[3]),' '),end='|')
+            print(f'{sublist[5]}'.center(15-len(sublist[4]),' '))
             print('-'*113)
             print(f'{data[1]}'.center(15,' '),end='|')
             print(f'{data[2]}'.center(15-len(data[2]),' '),end='|')
@@ -1047,13 +1047,47 @@ def StudentJiemian(stuid):
             print('\n')
             input('按Enter键返回'.center(36,'-'))
         elif int(selected)==4:
-            pass
+            clear()
+            classsql=f'select class_id from students where id={stuid};'
+            cursor.execute(classsql)
+            class_id=cursor.fetchone()[0]
+            sql=f'select t5.id,t5.ClassName,t5.TeacherName,t5.t1name,t5.t2name,t5.t3name,t5.t4name,teachers.TeacherName as t5name from (select t4.id,t4.ClassName,t4.TeacherName,t4.t1name,t4.t2name,t4.t3name,teachers.TeacherName as t4name,t4.t5_id from (select t3.id,t3.ClassName,t3.TeacherName,t3.t1name,t3.t2name,teachers.TeacherName as t3name,t3.t4_id,t3.t5_id from (select t2.id,t2.ClassName,t2.TeacherName,t2.t1name,teachers.TeacherName as t2name,t2.t3_id,t2.t4_id,t2.t5_id from (select t1.id,t1.ClassName,t1.TeacherName,teachers.TeacherName as t1name,t1.t2_id,t1.t3_id,t1.t4_id,t1.t5_id from (select class.id,ClassName,TeacherName,t1_id,t2_id,t3_id,t4_id,t5_id from class left join teachers on class .teacher_id=teachers.id where class.id={class_id}) as t1 left join teachers on t1.t1_id=teachers.id) as t2 left join teachers on t2.t2_id=teachers.id) as t3 left join teachers on teachers.id=t3.t3_id) as t4 left join teachers on teachers.id=t4.t4_id) as t5 left join teachers on t5.t5_id=teachers.id;'
+            cursor.execute(sql)
+            datat=cursor.fetchone()
+            data=[]
+            for x in datat:
+                x='无数据' if not x else x
+                data.append(x)
+            sublist=[]
+            for n in data[2:]:
+                sql=f'select subjects.SubjectName from teachers left join subjects on teachers.subject_id=subjects.id where teachers.TeacherName="{n}";'
+                cursor.execute(sql)
+                sub=cursor.fetchone()
+                sub=('无数据',) if not sub else sub
+                sublist.append(sub[0])
+            print('-'*113)
+            print('班级'.center(13,' '),end='|')
+            print('班主任'.center(12,' '),end='|')
+            print(f'{sublist[1]}'.center(15-len(sublist[0]),' '),end='|')
+            print(f'{sublist[2]}'.center(15-len(sublist[1]),' '),end='|')
+            print(f'{sublist[3]}'.center(15-len(sublist[2]),' '),end='|')
+            print(f'{sublist[4]}'.center(15-len(sublist[3]),' '),end='|')
+            print(f'{sublist[5]}'.center(15-len(sublist[4]),' '))
+            print('-'*113)
+            print(f'{data[1]}'.center(15,' '),end='|')
+            print(f'{data[2]}'.center(15-len(data[2]),' '),end='|')
+            print(f'{data[3]}'.center(15-len(data[3]),' '),end='|')
+            print(f'{data[4]}'.center(15-len(data[4]),' '),end='|')
+            print(f'{data[5]}'.center(15-len(data[5]),' '),end='|')
+            print(f'{data[6]}'.center(15-len(data[6]),' '),end='|')
+            print(f'{data[7]}'.center(15-len(data[7]),' '))
+            print('-'*113,'\n')
+            input('按Enter返回'.center(110,'-'))
         else:
             clear()
             print('退出成功'.center(28,'-','\n'))
             break
-# TODO 学生界面 
-StudentJiemian(1)
+
 # while True:
 #     clear()
 #     print(loginoptions)
