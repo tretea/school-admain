@@ -675,8 +675,12 @@ def GuanLi():
         selected=input('请输入您要进行的操作:')
         if not selected.isdigit():
             clear()
-            print('退出成功'.center(28,'*')) 
-            break
+            msg=input('确认退出? y/n')
+            if msg=='y' or msg=='Y':
+                print('退出成功'.center(28,'-'),'\n')
+                break
+            else:
+                continue
         elif int(selected)==1:
             while True:
                 clear()
@@ -777,8 +781,12 @@ def GuanLi():
                     break
         else:
             clear()
-            print('退出成功'.center(28,'*')) 
-            break
+            msg=input('确认退出? y/n')
+            if msg=='y' or msg=='Y':
+                print('退出成功'.center(28,'-'),'\n')
+                break
+            else:
+                continue
 
 def TeacherJiemian(teacherid):
     while True:
@@ -788,8 +796,12 @@ def TeacherJiemian(teacherid):
         selected=input('请输入您要进行的操作:')
         if not selected.isdigit():
             clear()
-            print('退出成功'.center(28,'*')) 
-            break
+            msg=input('确认退出? y/n')
+            if msg=='y' or msg=='Y':
+                print('退出成功'.center(28,'-'),'\n')
+                break
+            else:
+                continue
         elif int(selected)==1:
             while True:
                 clear()
@@ -945,8 +957,12 @@ def TeacherJiemian(teacherid):
             input('按Enter返回'.center(98,'-'))
         else:
             clear()
-            print('退出成功'.center(28,'*')) 
-            break
+            msg=input('确认退出? y/n')
+            if msg=='y' or msg=='Y':
+                print('退出成功'.center(28,'-'),'\n')
+                break
+            else:
+                continue
 
 def StudentJiemian(stuid):
     while True:
@@ -955,8 +971,12 @@ def StudentJiemian(stuid):
         selected=input('请输入您要进行的操作:')
         if not selected.isdigit():
             clear()
-            print('退出成功'.center(28,'*')) 
-            break
+            msg=input('确认退出? y/n')
+            if msg=='y' or msg=='Y':
+                print('退出成功'.center(28,'-'),'\n')
+                break
+            else:
+                continue
         elif int(selected)==1:
             while True:
                 clear()
@@ -1085,62 +1105,67 @@ def StudentJiemian(stuid):
             input('按Enter返回'.center(110,'-'))
         else:
             clear()
-            print('退出成功'.center(28,'-','\n'))
-            break
+            msg=input('确认退出? y/n')
+            if msg=='y' or msg=='Y':
+                print('退出成功'.center(28,'-'),'\n')
+                break
+            else:
+                continue
 
-# while True:
-#     clear()
-#     print(loginoptions)
-#     model=input('请输入选项:')
-#     if not model.isdigit():
-#         clear()
-#         print('退出成功'.center(36,'-'))
-#         break
-#     elif int(model)==0:
-#         username=input('请输入管理员账号:')
-#         userpwd=input('请输入密码:')
-#         sql=f'select password from user where username="{username}" and Type=0;'
-#         cursor.execute(sql)
-#         pwd=cursor.fetchone()
-#         if not pwd==None:
-#             pwd=pwd[0]
-#             if userpwd==pwd:
-#                 GuanLi() 
-#             else:
-#                 input('密码错误!!!')
-#         else:
-#             input('账号错误!!!')
-#     elif int(model)==1: 
-#         username=input('请输入老师账号:')
-#         userpwd=input('请输入密码:')
-#         sql=f'select password from user where username="{username}" and Type=1;'
-#         cursor.execute(sql)
-#         pwd=cursor.fetchone()
-#         if not pwd==None:
-#             pwd=pwd[0]
-#             if userpwd==pwd:
-#                 input('老师登录成功')
-#             else:
-#                 input('密码错误!!!')
-#         else:
-#             input('账号错误!!!')
-#     elif int(model)==2: 
-#         username=input('请输入学生账号:')
-#         userpwd=input('请输入密码:')
-#         sql=f'select password from user where username="{username}" and Type=2;'
-#         cursor.execute(sql)
-#         pwd=cursor.fetchone()
-#         if not pwd==None:
-#             pwd=pwd[0]
-#             if userpwd==pwd:
-#                 input('学生登陆成功')
-#             else:
-#                 input('密码错误!!!')
-#         else:
-#             input('账号错误!!!')
-#     else:
-#         clear()
-#         print('退出成功'.center(36,'-'))
-#         break
+while True:
+    clear()
+    print(loginoptions)
+    model=input('请输入选项:')
+    if not model.isdigit():
+        clear()
+        print('退出成功'.center(36,'-'))
+        break
+    elif int(model)==0:
+        username=input('请输入管理员账号:')
+        userpwd=input('请输入密码:')
+        sql=f'select password from user where username="{username}" and Type=0;'
+        cursor.execute(sql)
+        pwd=cursor.fetchone()
+        if not pwd==None:
+            pwd=pwd[0]
+            if userpwd==pwd:
+                GuanLi() 
+            else:
+                input('密码错误!!!')
+        else:
+            input('账号错误!!!')
+    elif int(model)==1: 
+        username=input('请输入老师账号:')
+        userpwd=input('请输入密码:')
+        sql=f'select password,t_id from user where username="{username}" and Type=1;'
+        cursor.execute(sql)
+        data=cursor.fetchone()
+        if not data==None:
+            pwd=data[0]
+            if userpwd==pwd:
+                TeacherJiemian(data[1])
+            else:
+                input('密码错误!!!')
+        else:
+            input('账号错误!!!')
+    elif int(model)==2: 
+        username=input('请输入学生账号:')
+        userpwd=input('请输入密码:')
+        sql=f'select password,s_id from user where username="{username}" and Type=2;'
+        cursor.execute(sql)
+        data=cursor.fetchone()
+        if not data==None:
+            pwd=data[0]
+            if userpwd==pwd:
+                StudentJiemian(data[1])
+            else:
+                input('密码错误!!!')
+        else:
+            input('账号错误!!!')
+    else:
+        clear()
+        print('退出成功'.center(36,'-'))
+        break
+
 db.close()
 
