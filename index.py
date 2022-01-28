@@ -1005,13 +1005,13 @@ def StudentJiemian(stuid):
                     break
         elif int(selected)==2:
             clear()
-            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid} and class.id=courses.class_id;'
+            sql=f'select weeknum,classnum,SubjectName from students left join courses on students.class_id=courses.class_id left join subjects on courses.sub_id=subjects.id where students.id={stuid};'
             cursor.execute(sql)
             data=cursor.fetchall()
             
             table={'周一':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周二':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周三':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周四':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周五':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周六':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周日':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''}}
             
-            for classname,time,week,weeknum,classnum,subjectname in data:
+            for weeknum,classnum,subjectname in data:
                 table[weeknum][classnum]=subjectname
             
 
