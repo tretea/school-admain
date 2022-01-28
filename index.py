@@ -574,6 +574,7 @@ loginoptions='''
 ************************************
 
 ------------按Enter键返回-----------
+
 '''
 
 teacheroptions='''
@@ -617,6 +618,37 @@ t_score_options='''
 ************************************
 
 ------------按Enter键返回-----------
+
+'''
+
+studentoptions='''
+************V1.0 学生界面*********** 
+**                                **
+**     ******1.我的管理******     **
+**                                **
+**     ******2.查看课程******     **
+**                                **
+**     ******3.查询成绩******     **
+**                                **
+**     ******4.查看老师******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+s_my_options='''
+************V1.0 学生界面*********** 
+**                                **
+**     ******1.个人信息******     **
+**                                **
+**     ******2.修改密码******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
 '''
 
 def t_Student(teacherid):
@@ -915,8 +947,102 @@ def TeacherJiemian(teacherid):
             clear()
             print('退出成功'.center(28,'*')) 
             break
+
+def StudentJiemian(stuid):
+    while True:
+        clear()
+        print(studentoptions)
+        selected=input('请输入您要进行的操作:')
+        if not selected.isdigit():
+            clear()
+            print('退出成功'.center(28,'*')) 
+            break
+        elif int(selected)==1:
+            while True:
+                clear()
+                print(s_my_options)
+                my_selected=input('请输入您要进行的操作:')
+                if not my_selected.isdigit():
+                    break
+                elif int(my_selected)==1:
+                    clear()
+                    sql=f'select ClassName,idcard,name,age,sex from students left join class on students.class_id=class.id where students.id={stuid};'
+                    cursor.execute(sql)
+                    data=cursor.fetchone()
+                    print('学生个人信息'.center(104,'-'))
+                    print('班级'.center(18,' '),'|','学号'.center(18,' '),'|','姓名'.center(18,' '),'|','年龄'.center(18,' '),'|','性别'.center(18,' '))
+                    print('-'*110)
+                    print(data[0].center(20,' '),'|',str(data[1]).center(20,' '),'|',data[2].center(20-len(data[2]),' '),'|',str(data[3]).center(20,' '),'|',data[4].center(20-len(data[4]),' '))
+                    print('-'*110,'\n')
+                    input('按Enter键退出'.center(106,'-'))
+                    continue
+                elif int(my_selected)==2:
+                    clear()
+                    msg=input('是否确认修改密码 y/n?')
+                    if msg=='y' or msg=='Y':
+                        while True:
+                            newpwd=input('请输入30以内字符:')
+                            while True:
+                                if not newpwd:
+                                    input('更新失败,新密码不能为空')
+                                    break
+                                elif len(newpwd)>30:
+                                    input('更新失败,密码限制30个字符')
+                                    break
+                                else:
+                                    surepwd=input('请输入确认密码:')
+                                    if not newpwd==surepwd:
+                                        input('确认密码错误')
+                                        continue
+                                    else:
+                                        sql=f'update user set password="{newpwd}" where s_id={stuid};'
+                                        input('修改该密码成功')
+                                        break
+                            break
+                    else:
+                        continue
+                else:
+                    break
+        elif int(selected)==2:
+            clear()
+            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid} and class.id=courses.class_id;'
+            cursor.execute(sql)
+            data=cursor.fetchall()
+            
+            table={'周一':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周二':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周三':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周四':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周五':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周六':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周日':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''}}
+            
+            for classname,time,week,weeknum,classnum,subjectname in data:
+                table[weeknum][classnum]=subjectname
+            
+
+            print(f'2019年第一学期第一周'.center(93,'-'))
+            print(' '.center(10,' '),'|','周一'.center(8,' '),'|','周二'.center(8,' '),'|','周三'.center(8,' '),'|','周四'.center(8,' '),'|','周五'.center(8,' '),'|','周六'.center(8,' '),'|','周日'.center(8,' '))
+            print('-'*101)
+            print('第一大节'.center(6,' '),'|',table['周一']['第一大节'].center(10 if table['周一']['第一大节']=='' else 8,' '),'|',table['周二']['第一大节'].center(10 if table['周二']['第一大节']=='' else 8,' '),'|',table['周三']['第一大节'].center(10 if table['周三']['第一大节']=='' else 8,' '),'|',table['周四']['第一大节'].center(10 if table['周四']['第一大节']=='' else 8,' '),'|',table['周五']['第一大节'].center(10 if table['周五']['第一大节']=='' else 8,' '),'|',table['周六']['第一大节'].center(10 if table['周六']['第一大节']=='' else 8,' '),'|',table['周日']['第一大节'].center(10 if table['周日']['第一大节']=='' else 8,' '))
+
+            print('-'*101)
+            
+            print('第二大节'.center(6,' '),'|',table['周一']['第二大节'].center(10 if table['周一']['第二大节']=='' else 8,' '),'|',table['周二']['第二大节'].center(10 if table['周二']['第二大节']=='' else 8,' '),'|',table['周三']['第二大节'].center(10 if table['周三']['第二大节']=='' else 8,' '),'|',table['周四']['第二大节'].center(10 if table['周四']['第二大节']=='' else 8,' '),'|',table['周五']['第二大节'].center(10 if table['周五']['第二大节']=='' else 8,' '),'|',table['周六']['第二大节'].center(10 if table['周六']['第二大节']=='' else 8,' '),'|',table['周日']['第二大节'].center(10 if table['周日']['第二大节']=='' else 8,' '))
+
+            print('-'*101)
+            print('第三大节'.center(6,' '),'|',table['周一']['第三大节'].center(10 if table['周一']['第三大节']=='' else 8,' '),'|',table['周二']['第三大节'].center(10 if table['周二']['第三大节']=='' else 8,' '),'|',table['周三']['第三大节'].center(10 if table['周三']['第三大节']=='' else 8,' '),'|',table['周四']['第三大节'].center(10 if table['周四']['第三大节']=='' else 8,' '),'|',table['周五']['第三大节'].center(10 if table['周五']['第三大节']=='' else 8,' '),'|',table['周六']['第三大节'].center(10 if table['周六']['第三大节']=='' else 8,' '),'|',table['周日']['第三大节'].center(10 if table['周日']['第三大节']=='' else 8,' '))
+
+            print('-'*101)
+            print('第四大节'.center(6,' '),'|',table['周一']['第四大节'].center(10 if table['周一']['第四大节']=='' else 8,' '),'|',table['周二']['第四大节'].center(10 if table['周二']['第四大节']=='' else 8,' '),'|',table['周三']['第四大节'].center(10 if table['周三']['第四大节']=='' else 8,' '),'|',table['周四']['第四大节'].center(10 if table['周四']['第四大节']=='' else 8,' '),'|',table['周五']['第四大节'].center(10 if table['周五']['第四大节']=='' else 8,' '),'|',table['周六']['第四大节'].center(10 if table['周六']['第四大节']=='' else 8,' '),'|',table['周日']['第四大节'].center(10 if table['周日']['第四大节']=='' else 8,' '))
+
+            print('-'*101)
+            print('\n')
+            input('按Enter返回'.center(98,'-'))
+        elif int(selected)==3:
+            pass
+        elif int(selected)==4:
+            pass
+        else:
+            clear()
+            print('退出成功'.center(28,'-','\n'))
+            break
 # TODO 学生界面 
-TeacherJiemian(14)
+StudentJiemian(1)
 # while True:
 #     clear()
 #     print(loginoptions)
