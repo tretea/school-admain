@@ -1034,7 +1034,18 @@ def StudentJiemian(stuid):
             print('\n')
             input('按Enter返回'.center(98,'-'))
         elif int(selected)==3:
-            pass
+            clear()
+            sql=f'select SubjectName,scores.score from students left join scores on students.id=scores.stu_id left join subjects on subjects.id=scores.sub_id where students.id={stuid};'
+            cursor.execute(sql)
+            data=cursor.fetchall()
+            print('2019年第二学期学生成绩表'.center(30,'-'))
+            print('科目'.center(18,' '),'|','成绩'.center(18,' '))
+            print('-'*40)
+            for sub,score in data:
+                print(sub.center(20-len(sub),' '),'|',str(score).center(20,' '))
+                print('-'*40)
+            print('\n')
+            input('按Enter键返回'.center(36,'-'))
         elif int(selected)==4:
             pass
         else:
