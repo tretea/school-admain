@@ -703,7 +703,7 @@ def updateSubject():
 
 def FindCourse():
     clear()
-    itime=input('请输入年份学期 eg:(2019年第一学期)')
+    itime=input('请输入年份学期 eg:(2021-2022年第一学期)')
     iweek=input('请输入第几周 eg:(第一周)')
     iclass=input('请输入班级号:')
     classsql=f'select id from class where ClassName="{iclass}";'
@@ -739,16 +739,16 @@ def FindCourse():
     return (itime,iweek,classid)
 
 def SetCourse():
+    clear()
+    timedata=FindCourse()
+    classid=timedata[2]
+    time=timedata[0]
+    week=timedata[1]
     while True:
-        clear()
-        timedata=FindCourse()
         try:
-            classid=timedata[2]
             FindSubject()
             subid=int(input('请输入学科id:'))
             subid=changId('subjects',subid)
-            time=timedata[0]
-            week=timedata[1]
             weeknum=input('请输入周几:')
             classnum=input('请输入第几大节:')
             sql=f'insert into courses(class_id,time,week,weeknum,classnum,sub_id)values({classid},"{time}","{week}","{weeknum}","{classnum}",{subid});'
@@ -788,7 +788,19 @@ def delCourse():
 
 # 老师功能函数
 def t_Student(teacherid):
-    classsql=f'select class.id from teachers left join class on teachers.id=class.teacher_id or teachers.id=class.t1_id or teachers.id=class.t2_id or teachers.id=class.t3_id or teachers.id=class.t4_id or teachers.id=class.t5_id where teachers.id={teacherid};'
+
+    classsql=f'select ClassName from teachers left join class on class.teacher_id=teachers.id or class.t1_id=teachers.id  or class.t2_id=teachers.id or class.t3_id=teachers.id or class.t4_id=teachers.id or class.t5_id=teachers.id where teachers.id={teacherid};'
+    cursor.execute(classsql)
+    data=cursor.fetchall()
+    print('班级'.center(20*len(data)-2,'-'))
+    for ind,x in enumerate(data):
+        if ind==len(data)-1:
+            print(str(x[0]).center(20,' '))
+        else:
+            print(str(x[0]).center(20,' '),end='|')
+    print('-'.center(20*len(data),'-'))
+    classname=input('请输入班级:')
+    classsql=f'select class.id from teachers left join class on class.ClassName={classname} where teachers.id={teacherid};'
     cursor.execute(classsql)
     classid=cursor.fetchone()[0]
     
@@ -1024,7 +1036,7 @@ def TeacherJiemian(teacherid):
                             while True:
                                 clear()
                                 try:
-                                    time=input('请输入某年某学期:')
+                                    time=input('请输入某年某学期 eg:(2021-2022年第一学期)')
                                     sub_sql=f'select subject_id from teachers where teachers.id={teacherid};'
                                     cursor.execute(sub_sql)
                                     sub_id=cursor.fetchone()[0]
@@ -1047,7 +1059,7 @@ def TeacherJiemian(teacherid):
                             while True:
                                 clear()
                                 t_Student(teacherid)
-                                time=input('请输入某年某学期:')
+                                time=input('请输入某年某学期 eg:(2021-2022年第一学期)')
                                 idcard=input('请输入学生号:')
                                 score=input('请输入学生本门课的成绩:')
                                 stusql=f'select id from students where idcard={idcard};'
@@ -1074,9 +1086,20 @@ def TeacherJiemian(teacherid):
                     break
         elif int(selected)==3:
             clear()
-            itime=input('请输入年份第几学期 eg:(2019年第一学期)')
+            classsql=f'select ClassName from teachers left join class on class.teacher_id=teachers.id or class.t1_id=teachers.id  or class.t2_id=teachers.id or class.t3_id=teachers.id or class.t4_id=teachers.id or class.t5_id=teachers.id where teachers.id={teacherid};'
+            cursor.execute(classsql)
+            data=cursor.fetchall()
+            print('班级'.center(20*len(data)-2,'-'))
+            for ind,x in enumerate(data):
+                if ind==len(data)-1:
+                    print(str(x[0]).center(20,' '))
+                else:
+                    print(str(x[0]).center(20,' '),end='|')
+            print('-'.center(20*len(data),'-'))
+            classname=input('请输入您要查询的班级:')
+            itime=input('请输入年份第几学期 eg:(2021-2022年第一学期)')
             iweek=input('请输入第几周 eg:(第一周)')
-            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid} and class.id=courses.class_id and time="{itime}" and week="{iweek}";'
+            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.ClassName={classname} where teachers.id={teacherid} and class.id=courses.class_id and time="{itime}" and week="{iweek}";'
             cursor.execute(sql)
             data=cursor.fetchall()
             
@@ -1176,7 +1199,7 @@ def StudentJiemian(stuid):
                     break
         elif int(selected)==2:
             clear()
-            itime=input('请输入年份第几学期 eg:(2019年第一学期)')
+            itime=input('请输入年份第几学期 eg:(2021-2022年第一学期)')
             iweek=input('请输入第几周 eg:(第一周)')
             sql=f'select weeknum,classnum,SubjectName from students left join courses on students.class_id=courses.class_id left join subjects on courses.sub_id=subjects.id where students.id={stuid} and time="{itime}" and week="{iweek}";'
             cursor.execute(sql)
@@ -1208,10 +1231,11 @@ def StudentJiemian(stuid):
             input('按Enter返回'.center(98,'-'))
         elif int(selected)==3:
             clear()
-            sql=f'select SubjectName,scores.score from students left join scores on students.id=scores.stu_id left join subjects on subjects.id=scores.sub_id where students.id={stuid};'
+            intime=input('请输入年份学期 eg:(2021-2022年第一学期)')
+            sql=f'select SubjectName,scores.score from students left join scores on students.id=scores.stu_id left join subjects on subjects.id=scores.sub_id where students.id={stuid} and time="{intime}";'
             cursor.execute(sql)
             data=cursor.fetchall()
-            print('2019年第二学期学生成绩表'.center(30,'-'))
+            print(f'{intime}成绩表'.center(30,'-'))
             print('科目'.center(18,' '),'|','成绩'.center(18,' '))
             print('-'*40)
             for sub,score in data:
@@ -1321,6 +1345,6 @@ while True:
         clear()
         print('退出成功'.center(36,'-'))
         break
-
+# db.commit()   
 db.close()
 
