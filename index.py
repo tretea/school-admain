@@ -1345,6 +1345,6 @@ while True:
         clear()
         print('退出成功'.center(36,'-'))
         break
-# db.commit()   
+db.commit()   
 db.close()
 
