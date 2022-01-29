@@ -4,6 +4,220 @@ import pymysql
 import os
 db=pymysql.connect(host='localhost',user='root',database='school',charset='utf8')
 cursor=db.cursor()
+
+# -----------------------------------------------------------------界面start----------------------------------------------------------------------
+# 登录界面
+loginoptions='''
+************V1.0 登录界面*********** 
+**                                **
+**     ******0.管理登录******     **
+**                                **
+**     ******1.老师登录******     **
+**                                **
+**     ******2.学生登录******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+
+# 管理员界面
+options='''
+**********V1.0 教务管理系统********* 
+**                                **
+**     ******1.查询数据******     **
+**                                **
+**     ******2.添加数据******     **
+**                                **
+**     ******3.删除数据******     **
+**                                **
+**     ******4.更新数据******     **
+**                                **
+**     ******5.课程管理******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+findoptions='''
+************V1.0 查询界面*********** 
+**                                **
+**     ******1.查询年级******     **
+**                                **
+**     ******2.查询班级******     **
+**                                **
+**     ******3.查询老师******     **
+**                                **
+**     ******4.查询科目******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+addoptions='''
+************V1.0 添加界面*********** 
+**                                **
+**     ******1.添加年级******     **
+**                                **
+**     ******2.添加班级******     **
+**                                **
+**     ******3.添加老师******     **
+**                                **
+**     ******4.添加学生******     **
+**                                **
+**     ******5.添加科目******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+deloptions='''
+************V1.0 删除界面*********** 
+**                                **
+**     ******1.删除年级******     **
+**                                **
+**     ******2.删除班级******     **
+**                                **
+**     ******3.删除老师******     **
+**                                ** 
+**     ******4.删除学生******     **
+**                                **
+**     ******5.删除科目******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+updateoptions='''
+************V1.0 更新界面*********** 
+**                                **
+**     ******1.更新年级******     **
+**                                **
+**     ******2.更新班级******     **
+**                                **
+**     ******3.更新老师******     **
+**                                **
+**     ******4.更新学生******     **
+**                                **
+**     ******5.更新科目******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+courseoptions='''
+************V1.0 课程管理*********** 
+**                                **
+**     ******1.查询课程******     **
+**                                **
+**     ******2.增加课程******     **
+**                                **
+**     ******3.删除课程******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+# 老师界面
+teacheroptions='''
+**********V1.0 老师管理系统********* 
+**                                **
+**     ******1.我的管理******     **
+**                                **
+**     ******2.学生管理******     **
+**                                **
+**     ******3.查看课程******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+t_my_options='''
+****************我的**************** 
+**                                **
+**     ******1.个人信息******     **
+**                                **
+**     ******2.修改密码******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+t_s_options='''
+**********V1.0 学生管理界面********* 
+**                                **
+**     ******1.查看学生******     **
+**                                **
+**     ******2.成绩管理******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+t_score_options='''
+**********V1.0 成绩管理界面********* 
+**                                **
+**     ******1.查看成绩******     **
+**                                **
+**     ******2.输入成绩******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+# 学生界面
+studentoptions='''
+************V1.0 学生界面*********** 
+**                                **
+**     ******1.我的管理******     **
+**                                **
+**     ******2.查看课程******     **
+**                                **
+**     ******3.查询成绩******     **
+**                                **
+**     ******4.查看老师******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+
+s_my_options='''
+************V1.0 学生界面*********** 
+**                                **
+**     ******1.个人信息******     **
+**                                **
+**     ******2.修改密码******     **
+**                                **
+************************************
+
+------------按Enter键返回-----------
+
+'''
+# -------------------------------------------------------------------界面end----------------------------------------------------------------------
+
+
 # 转换逻辑id为索引id
 def changId(table,table_id,swatch=0):
     if not swatch:
@@ -23,6 +237,8 @@ def clear():
 # TODO 课程管理
 # 查询课程
 
+# ---------------------------------------------------------------管理员功能start----------------------------------------------------------------------
+# 查询
 # 查询年级
 def FindGrade():
     cursor.execute('select * from grades;')
@@ -485,172 +701,92 @@ def updateSubject():
         else:
             break
 
-options='''
-**********V1.0 教务管理系统********* 
-**                                **
-**     ******1.查询数据******     **
-**                                **
-**     ******2.添加数据******     **
-**                                **
-**     ******3.删除数据******     **
-**                                **
-**     ******4.更新数据******     **
-**                                **
-**     ******5.课程管理******     **
-**                                **
-************************************
-'''
+def FindCourse():
+    clear()
+    itime=input('请输入年份学期 eg:(2019年第一学期)')
+    iweek=input('请输入第几周 eg:(第一周)')
+    iclass=input('请输入班级号:')
+    classsql=f'select id from class where ClassName="{iclass}";'
+    cursor.execute(classsql)
+    classid=cursor.fetchone()[0]
 
-findoptions='''
-************V1.0 查询界面*********** 
-**                                **
-**     ******1.查询年级******     **
-**                                **
-**     ******2.查询班级******     **
-**                                **
-**     ******3.查询老师******     **
-**                                **
-**     ******4.查询课程******     **
-**                                **
-************************************
-'''
+    sql=f'select time,week,weeknum,classnum,SubjectName from courses left join subjects on courses.sub_id=subjects.id where time="{itime}" and week="{iweek}" and class_id={classid};'
+    cursor.execute(sql)
+    data=cursor.fetchall()
+    table={'周一':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周二':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周三':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周四':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周五':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周六':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''},'周日':{'第一大节':'','第二大节':'','第三大节':'','第四大节':''}}
+    
+    for time,week,weeknum,classnum,subjectname in data:
+        table[weeknum][classnum]=subjectname
+    
 
-addoptions='''
-************V1.0 添加界面*********** 
-**                                **
-**     ******1.添加年级******     **
-**                                **
-**     ******2.添加班级******     **
-**                                **
-**     ******3.添加老师******     **
-**                                **
-**     ******4.添加学生******     **
-**                                **
-**     ******5.添加课程******     **
-**                                **
-************************************
-'''
+    print(f'{itime}{iweek}'.center(93,'-'))
+    print(' '.center(10,' '),'|','周一'.center(8,' '),'|','周二'.center(8,' '),'|','周三'.center(8,' '),'|','周四'.center(8,' '),'|','周五'.center(8,' '),'|','周六'.center(8,' '),'|','周日'.center(8,' '))
+    print('-'*101)
+    print('第一大节'.center(6,' '),'|',table['周一']['第一大节'].center(10 if table['周一']['第一大节']=='' else 8,' '),'|',table['周二']['第一大节'].center(10 if table['周二']['第一大节']=='' else 8,' '),'|',table['周三']['第一大节'].center(10 if table['周三']['第一大节']=='' else 8,' '),'|',table['周四']['第一大节'].center(10 if table['周四']['第一大节']=='' else 8,' '),'|',table['周五']['第一大节'].center(10 if table['周五']['第一大节']=='' else 8,' '),'|',table['周六']['第一大节'].center(10 if table['周六']['第一大节']=='' else 8,' '),'|',table['周日']['第一大节'].center(10 if table['周日']['第一大节']=='' else 8,' '))
 
-deloptions='''
-************V1.0 删除界面*********** 
-**                                **
-**     ******1.删除年级******     **
-**                                **
-**     ******2.删除班级******     **
-**                                **
-**     ******3.删除老师******     **
-**                                ** 
-**     ******4.删除学生******     **
-**                                **
-**     ******5.删除课程******     **
-**                                **
-************************************
-'''
+    print('-'*101)
+    
+    print('第二大节'.center(6,' '),'|',table['周一']['第二大节'].center(10 if table['周一']['第二大节']=='' else 8,' '),'|',table['周二']['第二大节'].center(10 if table['周二']['第二大节']=='' else 8,' '),'|',table['周三']['第二大节'].center(10 if table['周三']['第二大节']=='' else 8,' '),'|',table['周四']['第二大节'].center(10 if table['周四']['第二大节']=='' else 8,' '),'|',table['周五']['第二大节'].center(10 if table['周五']['第二大节']=='' else 8,' '),'|',table['周六']['第二大节'].center(10 if table['周六']['第二大节']=='' else 8,' '),'|',table['周日']['第二大节'].center(10 if table['周日']['第二大节']=='' else 8,' '))
 
-updateoptions='''
-************V1.0 更新界面*********** 
-**                                **
-**     ******1.更新年级******     **
-**                                **
-**     ******2.更新班级******     **
-**                                **
-**     ******3.更新老师******     **
-**                                **
-**     ******4.更新学生******     **
-**                                **
-**     ******5.更新课程******     **
-**                                **
-************************************
-'''
-loginoptions='''
-************V1.0 登录界面*********** 
-**                                **
-**     ******0.管理登录******     **
-**                                **
-**     ******1.老师登录******     **
-**                                **
-**     ******2.学生登录******     **
-**                                **
-************************************
+    print('-'*101)
+    print('第三大节'.center(6,' '),'|',table['周一']['第三大节'].center(10 if table['周一']['第三大节']=='' else 8,' '),'|',table['周二']['第三大节'].center(10 if table['周二']['第三大节']=='' else 8,' '),'|',table['周三']['第三大节'].center(10 if table['周三']['第三大节']=='' else 8,' '),'|',table['周四']['第三大节'].center(10 if table['周四']['第三大节']=='' else 8,' '),'|',table['周五']['第三大节'].center(10 if table['周五']['第三大节']=='' else 8,' '),'|',table['周六']['第三大节'].center(10 if table['周六']['第三大节']=='' else 8,' '),'|',table['周日']['第三大节'].center(10 if table['周日']['第三大节']=='' else 8,' '))
 
-------------按Enter键返回-----------
+    print('-'*101)
+    print('第四大节'.center(6,' '),'|',table['周一']['第四大节'].center(10 if table['周一']['第四大节']=='' else 8,' '),'|',table['周二']['第四大节'].center(10 if table['周二']['第四大节']=='' else 8,' '),'|',table['周三']['第四大节'].center(10 if table['周三']['第四大节']=='' else 8,' '),'|',table['周四']['第四大节'].center(10 if table['周四']['第四大节']=='' else 8,' '),'|',table['周五']['第四大节'].center(10 if table['周五']['第四大节']=='' else 8,' '),'|',table['周六']['第四大节'].center(10 if table['周六']['第四大节']=='' else 8,' '),'|',table['周日']['第四大节'].center(10 if table['周日']['第四大节']=='' else 8,' '))
 
-'''
+    print('-'*101)
+    print('\n')
+    return (itime,iweek,classid)
 
-teacheroptions='''
-**********V1.0 教务管理系统********* 
-**                                **
-**     ******1.我的管理******     **
-**                                **
-**     ******2.学生管理******     **
-**                                **
-**     ******3.查看课程******     **
-**                                **
-************************************
-'''
+def SetCourse():
+    while True:
+        clear()
+        timedata=FindCourse()
+        try:
+            classid=timedata[2]
+            FindSubject()
+            subid=int(input('请输入学科id:'))
+            subid=changId('subjects',subid)
+            time=timedata[0]
+            week=timedata[1]
+            weeknum=input('请输入周几:')
+            classnum=input('请输入第几大节:')
+            sql=f'insert into courses(class_id,time,week,weeknum,classnum,sub_id)values({classid},"{time}","{week}","{weeknum}","{classnum}",{subid});'
+            cursor.execute(sql)
+            print('添加成功')
+        except:
+            print('添加失败,请稍后重试......')
+        msg=input('是否继续添加 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
+    
+def delCourse():
+    while True:
+        clear()
+        timedata=FindCourse()
+        try:
+            classid=timedata[2]
+            time=timedata[0]
+            week=timedata[1]
+            weeknum=input('请输入周几:')
+            classnum=input('请输入第几大节:')
+            sql=f'delete from courses where class_id={classid} and time="{time}" and week="{week}" and weeknum="{weeknum}" and classnum="{classnum}";'
+            cursor.execute(sql)
+            print('删除成功')
+        except:
+            print('删除失败,请稍后重试......')
+        msg=input('是否继续删除 y/n?')
+        if msg=='y' or msg=='Y':
+            continue
+        else:
+            break
 
-t_my_options='''
-****************我的**************** 
-**                                **
-**     ******1.个人信息******     **
-**                                **
-**     ******2.修改密码******     **
-**                                **
-************************************
-'''
-t_s_options='''
-**********V1.0 学生管理界面********* 
-**                                **
-**     ******1.查看学生******     **
-**                                **
-**     ******2.成绩管理******     **
-**                                **
-************************************
-'''
 
-t_score_options='''
-**********V1.0 成绩管理界面********* 
-**                                **
-**     ******1.查看成绩******     **
-**                                **
-**     ******2.输入成绩******     **
-**                                **
-************************************
+# ---------------------------------------------------------------管理员功能end-------------------------------------------------------------------------
 
-------------按Enter键返回-----------
-
-'''
-
-studentoptions='''
-************V1.0 学生界面*********** 
-**                                **
-**     ******1.我的管理******     **
-**                                **
-**     ******2.查看课程******     **
-**                                **
-**     ******3.查询成绩******     **
-**                                **
-**     ******4.查看老师******     **
-**                                **
-************************************
-
-------------按Enter键返回-----------
-
-'''
-
-s_my_options='''
-************V1.0 学生界面*********** 
-**                                **
-**     ******1.个人信息******     **
-**                                **
-**     ******2.修改密码******     **
-**                                **
-************************************
-
-------------按Enter键返回-----------
-
-'''
-
+# 老师功能函数
 def t_Student(teacherid):
     classsql=f'select class.id from teachers left join class on teachers.id=class.teacher_id or teachers.id=class.t1_id or teachers.id=class.t2_id or teachers.id=class.t3_id or teachers.id=class.t4_id or teachers.id=class.t5_id where teachers.id={teacherid};'
     cursor.execute(classsql)
@@ -667,11 +803,11 @@ def t_Student(teacherid):
         print('-'*90)
     print('\n')
 
+# ---------------------------------------------------------------管理员登录start-----------------------------------------------------------------------
 def GuanLi():
     while True:
         clear()
         print(options)
-        print('按其他任意键退出'.center(28,'-'),'\n')
         selected=input('请输入您要进行的操作:')
         if not selected.isdigit():
             clear()
@@ -685,7 +821,6 @@ def GuanLi():
             while True:
                 clear()
                 print(findoptions)
-                print('按其他任意键返回'.center(28,'-'),'\n')
                 findselect=input('请输入需要查询的选项:')
                 clear()
                 if not findselect.isdigit():
@@ -708,7 +843,6 @@ def GuanLi():
             while True:
                 clear()
                 print(addoptions)
-                print('按其他任意键返回'.center(28,'-'),'\n')
                 i=input('请输入您要添加的选项:')
                 if not i.isdigit():
                     break
@@ -733,7 +867,6 @@ def GuanLi():
             while True:
                 clear()
                 print(deloptions)
-                print('按其他任意键返回'.center(28,'-'),'\n')
                 i=input('请输入您要添加的选项:')
                 if not i.isdigit():
                     break
@@ -758,7 +891,6 @@ def GuanLi():
             while True:
                 clear()
                 print(updateoptions)
-                print('按其他任意键返回'.center(28,'-'),'\n')
                 i=input('请输入您要添加的选项:')
                 if not i.isdigit():
                     break
@@ -779,6 +911,22 @@ def GuanLi():
                     print('按其他任意键返回'.center(28,'-'),'\n')
                 else:
                     break
+        elif int(selected)==5:
+            while True:
+                clear()
+                print(courseoptions)
+                i=input('请输入您要添加的选项:')
+                if not i.isdigit():
+                    break
+                elif int(i)==1:
+                    FindCourse()
+                    input('按Enter返回'.center(98,'-'))
+                elif int(i)==2:
+                    SetCourse()
+                elif int(i)==3:
+                    delCourse()
+                else:
+                    break
         else:
             clear()
             msg=input('确认退出? y/n')
@@ -787,12 +935,13 @@ def GuanLi():
                 break
             else:
                 continue
+# ---------------------------------------------------------------管理员登录end-------------------------------------------------------------------------
 
+# ---------------------------------------------------------------老师登录start-----------------------------------------------------------------------
 def TeacherJiemian(teacherid):
     while True:
         clear()
         print(teacheroptions)
-        print('按其他任意键退出'.center(28,'-'),'\n')
         selected=input('请输入您要进行的操作:')
         if not selected.isdigit():
             clear()
@@ -806,7 +955,6 @@ def TeacherJiemian(teacherid):
             while True:
                 clear()
                 print(t_my_options)
-                print('按其他任意键返回'.center(28,'-'),'\n')
                 findselect=input('请输入需要查询的选项:')
                 clear()
                 if not findselect.isdigit():
@@ -858,7 +1006,6 @@ def TeacherJiemian(teacherid):
             while True:
                 clear()
                 print(t_s_options)
-                print('按其他任意键返回'.center(28,'-'),'\n')
                 i=input('请输入您要添加的选项:')
                 if not i.isdigit():
                     break
@@ -927,7 +1074,9 @@ def TeacherJiemian(teacherid):
                     break
         elif int(selected)==3:
             clear()
-            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid} and class.id=courses.class_id;'
+            itime=input('请输入年份第几学期 eg:(2019年第一学期)')
+            iweek=input('请输入第几周 eg:(第一周)')
+            sql=f'select ClassName,time,week,weeknum,classnum,SubjectName from teachers left join subjects on teachers.subject_id=subjects.id left join courses on courses.sub_id=teachers.subject_id left join class on class.teacher_id=teachers.id where teachers.id={teacherid} and class.id=courses.class_id and time="{itime}" and week="{iweek}";'
             cursor.execute(sql)
             data=cursor.fetchall()
             
@@ -937,7 +1086,7 @@ def TeacherJiemian(teacherid):
                 table[weeknum][classnum]=subjectname
             
 
-            print(f'2019年第一学期第一周'.center(93,'-'))
+            print(f'{itime}{iweek}'.center(93,'-'))
             print(' '.center(10,' '),'|','周一'.center(8,' '),'|','周二'.center(8,' '),'|','周三'.center(8,' '),'|','周四'.center(8,' '),'|','周五'.center(8,' '),'|','周六'.center(8,' '),'|','周日'.center(8,' '))
             print('-'*101)
             print('第一大节'.center(6,' '),'|',table['周一']['第一大节'].center(10 if table['周一']['第一大节']=='' else 8,' '),'|',table['周二']['第一大节'].center(10 if table['周二']['第一大节']=='' else 8,' '),'|',table['周三']['第一大节'].center(10 if table['周三']['第一大节']=='' else 8,' '),'|',table['周四']['第一大节'].center(10 if table['周四']['第一大节']=='' else 8,' '),'|',table['周五']['第一大节'].center(10 if table['周五']['第一大节']=='' else 8,' '),'|',table['周六']['第一大节'].center(10 if table['周六']['第一大节']=='' else 8,' '),'|',table['周日']['第一大节'].center(10 if table['周日']['第一大节']=='' else 8,' '))
@@ -963,7 +1112,9 @@ def TeacherJiemian(teacherid):
                 break
             else:
                 continue
+# ---------------------------------------------------------------老师登录end-----------------------------------------------------------------------
 
+# ---------------------------------------------------------------学生登录start-----------------------------------------------------------------------
 def StudentJiemian(stuid):
     while True:
         clear()
@@ -1025,7 +1176,9 @@ def StudentJiemian(stuid):
                     break
         elif int(selected)==2:
             clear()
-            sql=f'select weeknum,classnum,SubjectName from students left join courses on students.class_id=courses.class_id left join subjects on courses.sub_id=subjects.id where students.id={stuid};'
+            itime=input('请输入年份第几学期 eg:(2019年第一学期)')
+            iweek=input('请输入第几周 eg:(第一周)')
+            sql=f'select weeknum,classnum,SubjectName from students left join courses on students.class_id=courses.class_id left join subjects on courses.sub_id=subjects.id where students.id={stuid} and time="{itime}" and week="{iweek}";'
             cursor.execute(sql)
             data=cursor.fetchall()
             
@@ -1035,7 +1188,7 @@ def StudentJiemian(stuid):
                 table[weeknum][classnum]=subjectname
             
 
-            print(f'2019年第一学期第一周'.center(93,'-'))
+            print(f'{itime}{iweek}'.center(93,'-'))
             print(' '.center(10,' '),'|','周一'.center(8,' '),'|','周二'.center(8,' '),'|','周三'.center(8,' '),'|','周四'.center(8,' '),'|','周五'.center(8,' '),'|','周六'.center(8,' '),'|','周日'.center(8,' '))
             print('-'*101)
             print('第一大节'.center(6,' '),'|',table['周一']['第一大节'].center(10 if table['周一']['第一大节']=='' else 8,' '),'|',table['周二']['第一大节'].center(10 if table['周二']['第一大节']=='' else 8,' '),'|',table['周三']['第一大节'].center(10 if table['周三']['第一大节']=='' else 8,' '),'|',table['周四']['第一大节'].center(10 if table['周四']['第一大节']=='' else 8,' '),'|',table['周五']['第一大节'].center(10 if table['周五']['第一大节']=='' else 8,' '),'|',table['周六']['第一大节'].center(10 if table['周六']['第一大节']=='' else 8,' '),'|',table['周日']['第一大节'].center(10 if table['周日']['第一大节']=='' else 8,' '))
@@ -1111,7 +1264,9 @@ def StudentJiemian(stuid):
                 break
             else:
                 continue
+# ---------------------------------------------------------------学生登录end-----------------------------------------------------------------------
 
+# main函数
 while True:
     clear()
     print(loginoptions)
