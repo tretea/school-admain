@@ -1,5 +1,7 @@
 # School admain
 
+# 效果展示
+> https://www.bilibili.com/video/BV1zF411n7EJ?vd_source=1cfc7dd8f9afe9f02b598b76a14034c8
 ## 介绍
 
 python+pymysql+mysql 入门项目'教务管理系统'
@@ -50,3 +52,6 @@ python+pymysql+mysql 入门项目'教务管理系统'
 
 1. 新建 school 数据库
 2. mysqldump -u 用户名 -p school < school.sql
+
+# 执行
+## 命令行执行python index.py
